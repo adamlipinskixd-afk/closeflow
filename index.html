@@ -3,23 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Network</title>
+    <title>CloseFlow | Elite Closing Network</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        body { background-color: #0a1128; color: #ffffff; margin: 0; }
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .orange-glow { color: #ff8c00; text-shadow: 0 0 15px rgba(255,140,0,0.5); }
+        .card-bg { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); transition: 0.3s; }
+        .card-bg:hover { border-color: #ff8c00; background: rgba(255, 255, 255, 0.04); }
+        .line-draw { border-left: 2px solid rgba(255, 140, 0, 0.3); }
     </style>
 </head>
-<body>
-    <main style="max-width: 800px; margin: 0 auto; padding: 40px 20px;">
-        
-        <div style="margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden;">
-            <div style="aspect-ratio: 16/9; background: #000;">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/TWOJ_ID_FILMU" frameborder="0" allowfullscreen></iframe>
+<body class="overflow-x-hidden">
+
+    <div class="max-w-5xl mx-auto px-6 py-24 text-center">
+        <p class="text-[10px] tracking-[0.5em] orange-glow mb-8 uppercase font-bold" data-aos="fade-up">Invitation Only • 2026 Batch</p>
+        <h1 class="text-5xl md:text-7xl font-black mb-12 italic uppercase tracking-tighter" data-aos="fade-up">
+            What You <span class="orange-glow">Gain</span>
+        </h1>
+
+        <div class="rounded-3xl overflow-hidden border border-white/10 mb-32 shadow-2xl shadow-orange-500/10" data-aos="zoom-in">
+            <div class="aspect-video bg-zinc-900 flex items-center justify-center">
+                <p class="text-zinc-500">Miejsce na Twoje VSL (Wideo)</p>
             </div>
         </div>
 
-        <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1" width="100%" height="800" frameborder="0"></iframe>
+        <h2 class="text-3xl font-bold mb-16 uppercase tracking-widest text-zinc-400">The Process</h2>
+        <div class="grid md:grid-cols-3 gap-8 mb-32 text-left">
+            <div class="p-8 rounded-2xl card-bg" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-orange-500 text-sm font-bold mb-4 italic">STEP 01</div>
+                <h3 class="text-xl font-bold mb-3">Application</h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">Fill out the form below. We filter for hunger, experience, and mindset.</p>
+            </div>
+            <div class="p-8 rounded-2xl card-bg" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-orange-500 text-sm font-bold mb-4 italic">STEP 02</div>
+                <h3 class="text-xl font-bold mb-3">The Interview</h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">A 15-minute diagnostic call to see if you're a fit for our current high-ticket offers.</p>
+            </div>
+            <div class="p-8 rounded-2xl card-bg" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-orange-500 text-sm font-bold mb-4 italic">STEP 03</div>
+                <h3 class="text-xl font-bold mb-3">Placement</h3>
+                <h3 class="text-xl font-bold mb-3">Placement</h3>
+                <p class="text-zinc-500 text-sm leading-relaxed">Get deployed into a validated offer and start closing deals immediately.</p>
+            </div>
+        </div>
 
-    </main>
+        <div id="apply" class="max-w-2xl mx-auto border-t border-white/10 pt-24" data-aos="fade-up">
+            <h2 class="text-2xl font-bold mb-12 uppercase">Apply for Membership</h2>
+            <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1" width="100%" height="800" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ duration: 1000, once: true });</script>
 </body>
 </html>
