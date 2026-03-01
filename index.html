@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,96 +7,96 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
+        /* PODSTAWA I UKRYWANIE PASKA PRZEWIJANIA */
         body, html { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; margin: 0;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
+        body::-webkit-scrollbar { display: none; } /* Chrome, Safari, Opera */
 
-        /* INTENSYWNIEJSZY SUBTELNY GLOW (TYLKO DESKTOP) */
+        /* INTENSYWNY GLOW KURSORA */
         @media (pointer: fine) {
             #custom-cursor {
-                width: 70px; 
-                height: 70px;
-                /* Zwiększone opacity z 0.1 na 0.25 dla większej mocy */
-                background: radial-gradient(circle, rgba(255, 140, 0, 0.25) 0%, transparent 75%);
-                border-radius: 50%;
-                position: fixed;
-                pointer-events: none;
-                z-index: 9999;
-                transform: translate(-50%, -50%);
-                transition: transform 0.05s linear, opacity 0.2s ease;
-                display: block;
+                width: 75px; height: 75px;
+                background: radial-gradient(circle, rgba(255, 140, 0, 0.3) 0%, transparent 75%);
+                border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
+                transform: translate(-50%, -50%); transition: transform 0.05s linear, opacity 0.2s ease;
             }
         }
 
-        /* UKRYWANIE NA DOTYKU */
-        @media (pointer: coarse) {
-            #custom-cursor { display: none !important; }
-        }
+        @media (pointer: coarse) { #custom-cursor { display: none !important; } }
 
+        /* BRANDING */
         .brand-logo { color: #ff8c00; letter-spacing: 0.5em; font-weight: 300; text-transform: uppercase; }
-        .divider-line { border-bottom: 1px solid rgba(255, 255, 255, 0.08); width: 100%; margin-bottom: 50px; }
+        .divider-line { border-bottom: 1px solid rgba(255, 255, 255, 0.08); width: 100%; }
 
-        /* PULSUJĄCA PIGUŁKA */
-        .pill-button {
-            border: 1px solid rgba(255, 140, 0, 0.4); background: rgba(255, 140, 0, 0.02);
-            color: #ff8c00; padding: 10px 24px; border-radius: 50px; font-size: 10px;
-            letter-spacing: 0.15em; display: inline-flex; align-items: center; 
-            text-transform: uppercase; font-weight: 600; animation: pulse-glow 3s infinite ease-in-out;
+        /* PRZYCISK SCROLLUJĄCY */
+        .hero-btn {
+            background: linear-gradient(135deg, #ff8c00 0%, #e67e00 100%);
+            color: #fff; padding: 16px 36px; border-radius: 12px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+            transition: all 0.3s ease;
         }
+        .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255, 140, 0, 0.4); }
 
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.1); }
-            50% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.3); }
-        }
+        /* ODCIĘCIA SEKCJI */
+        .section-dark { background: #000; }
+        .section-gray { background: linear-gradient(to bottom, #0a0a0a, #000); border-top: 1px solid rgba(255,255,255,0.03); }
 
-        .glass-vsl { background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(10px); border: 1px solid rgba(255, 140, 0, 0.1); }
-
-        /* FORMULARZ - PRECYZYJNE CIĘCIE STOPKI */
+        /* FORMULARZ */
         .form-wrapper {
-            max-width: 550px; margin: 0 auto;
-            height: 565px; overflow: hidden; background: #000; border-radius: 20px;
-            position: relative;
+            max-width: 550px; margin: 0 auto; height: 565px; overflow: hidden;
+            background: #000; border-radius: 20px; position: relative;
         }
-        
-        iframe {
-            position: absolute; top: 0; left: 0; width: 100%; height: 650px;
-            border: none; background: transparent;
-        }
+        iframe { position: absolute; top: 0; left: 0; width: 100%; height: 650px; border: none; }
     </style>
 </head>
 <body>
 
     <div id="custom-cursor"></div>
 
-    <div class="pt-12 pb-8 text-center">
+    <nav class="pt-12 pb-8 text-center section-dark">
         <h1 class="brand-logo text-xl md:text-2xl">CloseFlow</h1>
-    </div>
-
+    </nav>
     <div class="divider-line"></div>
 
-    <div class="max-w-4xl mx-auto px-6 text-center">
-        <div class="mb-16">
-            <div class="pill-button">
-                <span class="h-1.5 w-1.5 bg-[#ff8c00] rounded-full mr-2.5 shadow-[0_0_8px_#ff8c00]"></span>
-                Złóż aplikację • Liczba miejsc ograniczona
+    <section class="py-24 px-6 text-center section-dark">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
+                Twoja Szansa na <span class="text-[#ff8c00]">Realne Wyniki</span> w Sprzedaży High-Ticket
+            </h2>
+            <p class="text-zinc-500 text-lg mb-12 max-w-2xl mx-auto">
+                Dostęp jest ograniczony. Nie każdy, kto złoży aplikację, zostanie zakwalifikowany do naszego zamkniętego networku.
+            </p>
+            <a href="#form-target" class="hero-btn inline-block">Złóż Aplikację Teraz →</a>
+        </div>
+    </section>
+
+    <section class="py-12 px-6 section-gray">
+        <div class="max-w-4xl mx-auto">
+            <div class="rounded-3xl overflow-hidden border border-white/5 bg-zinc-950 shadow-2xl mb-32">
+                <div class="aspect-video flex items-center justify-center">
+                    <p class="text-zinc-700 uppercase tracking-[0.3em] text-[9px] font-semibold">Prezentacja wideo wkrótce</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="glass-vsl rounded-3xl mb-24 shadow-2xl">
-            <div class="aspect-video flex items-center justify-center">
-                <p class="text-zinc-700 uppercase tracking-[0.3em] text-[9px] font-semibold">Prezentacja wideo wkrótce</p>
-            </div>
+    <section id="form-target" class="py-24 px-6 section-dark">
+        <div class="text-center mb-16">
+            <span class="text-[#ff8c00] text-xs font-bold uppercase tracking-widest border border-[#ff8c00]/30 px-4 py-2 rounded-full">
+                Formularz Rekrutacyjny
+            </span>
         </div>
-
         <div class="form-wrapper shadow-2xl shadow-orange-500/5">
-            <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" 
-                    allowtransparency="true"></iframe>
+            <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" allowtransparency="true"></iframe>
         </div>
-    </div>
+    </section>
 
     <script>
         const cursor = document.getElementById('custom-cursor');
-        
         if (window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
                 cursor.style.left = e.clientX + 'px';
@@ -104,8 +104,6 @@
                 
                 const form = document.querySelector('.form-wrapper');
                 const rect = form.getBoundingClientRect();
-                
-                // Ukrywamy blask nad formularzem, żeby nie blokował interakcji (mur chiński iframe'u)
                 if (e.clientX >= rect.left && e.clientX <= rect.right &&
                     e.clientY >= rect.top && e.clientY <= rect.bottom) {
                     cursor.style.opacity = '0';
