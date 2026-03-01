@@ -11,18 +11,19 @@
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; margin: 0;
         }
 
-        /* SUBTELNY GLOWING EFFECT (TYLKO DESKTOP) */
+        /* INTENSYWNIEJSZY SUBTELNY GLOW (TYLKO DESKTOP) */
         @media (pointer: fine) {
             #custom-cursor {
-                width: 60px; /* Zmniejszony blask */
-                height: 60px;
-                background: radial-gradient(circle, rgba(255, 140, 0, 0.1) 0%, transparent 75%);
+                width: 70px; 
+                height: 70px;
+                /* Zwiększone opacity z 0.1 na 0.25 dla większej mocy */
+                background: radial-gradient(circle, rgba(255, 140, 0, 0.25) 0%, transparent 75%);
                 border-radius: 50%;
                 position: fixed;
-                pointer-events: none; /* Pozwala klikać we wszystko pod spodem */
+                pointer-events: none;
                 z-index: 9999;
                 transform: translate(-50%, -50%);
-                transition: transform 0.05s linear;
+                transition: transform 0.05s linear, opacity 0.2s ease;
                 display: block;
             }
         }
@@ -35,21 +36,22 @@
         .brand-logo { color: #ff8c00; letter-spacing: 0.5em; font-weight: 300; text-transform: uppercase; }
         .divider-line { border-bottom: 1px solid rgba(255, 255, 255, 0.08); width: 100%; margin-bottom: 50px; }
 
+        /* PULSUJĄCA PIGUŁKA */
         .pill-button {
             border: 1px solid rgba(255, 140, 0, 0.4); background: rgba(255, 140, 0, 0.02);
             color: #ff8c00; padding: 10px 24px; border-radius: 50px; font-size: 10px;
-            letter-spacing: 0.2em; display: inline-flex; align-items: center; 
+            letter-spacing: 0.15em; display: inline-flex; align-items: center; 
             text-transform: uppercase; font-weight: 600; animation: pulse-glow 3s infinite ease-in-out;
         }
 
         @keyframes pulse-glow {
             0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.1); }
-            50% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.3); }
         }
 
         .glass-vsl { background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(10px); border: 1px solid rgba(255, 140, 0, 0.1); }
 
-        /* FORMULARZ - PRECYZYJNE CIĘCIE */
+        /* FORMULARZ - PRECYZYJNE CIĘCIE STOPKI */
         .form-wrapper {
             max-width: 550px; margin: 0 auto;
             height: 565px; overflow: hidden; background: #000; border-radius: 20px;
@@ -76,7 +78,7 @@
         <div class="mb-16">
             <div class="pill-button">
                 <span class="h-1.5 w-1.5 bg-[#ff8c00] rounded-full mr-2.5 shadow-[0_0_8px_#ff8c00]"></span>
-                Tylko dla zaproszonych • Ograniczona liczba miejsc
+                Złóż aplikację • Liczba miejsc ograniczona
             </div>
         </div>
 
@@ -100,13 +102,13 @@
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
                 
-                // SPRAWDZAMY CZY MYSZ JEST NAD FORMULARZEM
                 const form = document.querySelector('.form-wrapper');
                 const rect = form.getBoundingClientRect();
                 
+                // Ukrywamy blask nad formularzem, żeby nie blokował interakcji (mur chiński iframe'u)
                 if (e.clientX >= rect.left && e.clientX <= rect.right &&
                     e.clientY >= rect.top && e.clientY <= rect.bottom) {
-                    cursor.style.opacity = '0'; // Ukryj blask nad formularzem, by nie blokował
+                    cursor.style.opacity = '0';
                 } else {
                     cursor.style.opacity = '1';
                 }
