@@ -3,77 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloseFlow | Elite Closing Network</title>
+    <title>CloseFlow</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        /* GŁĘBOKA CZERŃ I TYPOGRAFIA */
         body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; }
         
-        .orange-glow { 
+        .orange-text { 
             color: #ff8c00; 
-            text-shadow: 0 0 20px rgba(255,140,0,0.4);
-            animation: pulse-glow 3s infinite;
+            letter-spacing: 0.2em;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .pill-button {
+            border: 1px solid #ff8c00;
+            background: rgba(255, 140, 0, 0.05);
+            color: #ff8c00;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            display: inline-flex;
+            align-items: center;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
-        /* NAPRAWA FORMULARZA - ŻEBY SIĘ NIE ZLEWAŁ */
-        .tally-container {
-            background: #000; /* Wymuszamy czarne tło pod kontenerem */
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid rgba(255,140,0,0.1);
-        }
-
-        /* ANIMACJA ZMIENIAJĄCYCH SIĘ NAPISÓW */
-        .word-flicker {
+        .pill-dot {
+            height: 8px;
+            width: 8px;
+            background-color: #ff8c00;
+            border-radius: 50%;
             display: inline-block;
-            min-width: 200px;
+            margin-right: 12px;
+        }
+
+        /* Kontener dla Tally, by nie było widać granatu */
+        .form-wrapper {
+            background-color: #000;
+            border-radius: 20px;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
 
-    <div class="max-w-5xl mx-auto px-6 py-24 text-center">
-        <h1 class="text-6xl md:text-8xl font-black mb-12 italic uppercase tracking-tighter">
-            Elite <span class="orange-glow word-flicker" id="dynamic-word">Closing</span>
-        </h1>
+    <div class="max-w-5xl mx-auto px-6 py-16 text-center">
+        
+        <div class="mb-6">
+            <h1 class="text-2xl md:text-3xl font-light uppercase orange-text tracking-[0.4em]">
+                CloseFlow
+            </h1>
+        </div>
 
-        <div class="rounded-3xl overflow-hidden border border-white/10 mb-32 bg-zinc-950 shadow-inner">
-            <div class="aspect-video flex items-center justify-center">
-                <p class="text-zinc-600 tracking-widest uppercase text-xs">Waiting for VSL signal...</p>
+        <div class="mb-20">
+            <div class="pill-button">
+                <span class="pill-dot"></span>
+                Invitation-Based • Limited Spots
             </div>
         </div>
 
-        <div class="tally-container max-w-2xl mx-auto shadow-2xl shadow-orange-500/5">
+        <div class="rounded-3xl overflow-hidden border border-white/5 mb-24 bg-zinc-950">
+            <div class="aspect-video flex items-center justify-center">
+                <p class="text-zinc-700 uppercase tracking-widest text-[10px]">Video Presentation Coming Soon</p>
+            </div>
+        </div>
+
+        <div class="form-wrapper max-w-xl mx-auto">
             <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" 
                     width="100%" 
-                    height="600" 
-                    frameborder="0" 
-                    title="Application Form"></iframe>
+                    height="700" 
+                    frameborder="0"></iframe>
         </div>
+
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({ duration: 1000, once: true });
-
-        // LOGIKA ZMIENIAJĄCYCH SIĘ NAPISÓW
-        const words = ["Closing", "Network", "Flow", "Success"];
-        let i = 0;
-        setInterval(() => {
-            const wordEl = document.getElementById('dynamic-word');
-            wordEl.style.opacity = 0;
-            setTimeout(() => {
-                i = (i + 1) % words.length;
-                wordEl.innerText = words[i];
-                wordEl.style.opacity = 1;
-            }, 500);
-        }, 3000);
-    </script>
 </body>
 </html>
