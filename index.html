@@ -7,45 +7,39 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
-        /* PODSTAWA I UKRYWANIE PASKA PRZEWIJANIA */
-        body, html { 
+        /* CAŁKOWITE USUNIĘCIE PASKA PRZEWIJANIA */
+        html, body { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; margin: 0;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            overflow-x: hidden; scrollbar-width: none; 
         }
-        body::-webkit-scrollbar { display: none; } /* Chrome, Safari, Opera */
+        body::-webkit-scrollbar { display: none; }
 
-        /* INTENSYWNY GLOW KURSORA */
+        /* KURSOR GLOW */
         @media (pointer: fine) {
             #custom-cursor {
-                width: 75px; height: 75px;
-                background: radial-gradient(circle, rgba(255, 140, 0, 0.3) 0%, transparent 75%);
+                width: 80px; height: 80px;
+                background: radial-gradient(circle, rgba(255, 140, 0, 0.25) 0%, transparent 75%);
                 border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
                 transform: translate(-50%, -50%); transition: transform 0.05s linear, opacity 0.2s ease;
             }
         }
-
         @media (pointer: coarse) { #custom-cursor { display: none !important; } }
 
         /* BRANDING */
         .brand-logo { color: #ff8c00; letter-spacing: 0.5em; font-weight: 300; text-transform: uppercase; }
-        .divider-line { border-bottom: 1px solid rgba(255, 255, 255, 0.08); width: 100%; }
+        
+        /* SEKCJE Z GRADIENTAMI I ODCIĘCIEM */
+        .vsl-section { background-color: #0f0f0f; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .hero-section { background-color: #000; }
 
-        /* PRZYCISK SCROLLUJĄCY */
         .hero-btn {
-            background: linear-gradient(135deg, #ff8c00 0%, #e67e00 100%);
-            color: #fff; padding: 16px 36px; border-radius: 12px;
+            background: #ff8c00; color: #fff; padding: 16px 40px; border-radius: 50px;
             font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
-            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.2); transition: all 0.3s ease;
         }
-        .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255, 140, 0, 0.4); }
+        .hero-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 140, 0, 0.4); }
 
-        /* ODCIĘCIA SEKCJI */
-        .section-dark { background: #000; }
-        .section-gray { background: linear-gradient(to bottom, #0a0a0a, #000); border-top: 1px solid rgba(255,255,255,0.03); }
-
-        /* FORMULARZ */
+        /* FORMULARZ I CIĘCIE TALLY */
         .form-wrapper {
             max-width: 550px; margin: 0 auto; height: 565px; overflow: hidden;
             background: #000; border-radius: 20px; position: relative;
@@ -57,39 +51,40 @@
 
     <div id="custom-cursor"></div>
 
-    <nav class="pt-12 pb-8 text-center section-dark">
+    <nav class="pt-12 pb-8 text-center bg-black">
         <h1 class="brand-logo text-xl md:text-2xl">CloseFlow</h1>
     </nav>
-    <div class="divider-line"></div>
 
-    <section class="py-24 px-6 text-center section-dark">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">
-                Twoja Szansa na <span class="text-[#ff8c00]">Realne Wyniki</span> w Sprzedaży High-Ticket
-            </h2>
-            <p class="text-zinc-500 text-lg mb-12 max-w-2xl mx-auto">
-                Dostęp jest ograniczony. Nie każdy, kto złoży aplikację, zostanie zakwalifikowany do naszego zamkniętego networku.
-            </p>
-            <a href="#form-target" class="hero-btn inline-block">Złóż Aplikację Teraz →</a>
-        </div>
-    </section>
-
-    <section class="py-12 px-6 section-gray">
-        <div class="max-w-4xl mx-auto">
-            <div class="rounded-3xl overflow-hidden border border-white/5 bg-zinc-950 shadow-2xl mb-32">
+    <section class="vsl-section py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="mb-12">
+                <span class="border border-[#ff8c00]/40 bg-[#ff8c00]/5 text-[#ff8c00] text-[10px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full">
+                    • Invitation-Based • Limited Spots
+                </span>
+            </div>
+            <div class="rounded-2xl overflow-hidden border border-white/5 bg-black shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                 <div class="aspect-video flex items-center justify-center">
-                    <p class="text-zinc-700 uppercase tracking-[0.3em] text-[9px] font-semibold">Prezentacja wideo wkrótce</p>
+                    <p class="text-zinc-800 uppercase tracking-[0.4em] text-[10px] font-bold">Prezentacja CloseFlow wkrótce</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="form-target" class="py-24 px-6 section-dark">
-        <div class="text-center mb-16">
-            <span class="text-[#ff8c00] text-xs font-bold uppercase tracking-widest border border-[#ff8c00]/30 px-4 py-2 rounded-full">
-                Formularz Rekrutacyjny
-            </span>
+    <section class="hero-section py-24 px-6 text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-medium mb-6 leading-tight text-zinc-100">
+                To jest Twoja szansa na otrzymanie <br> 
+                <span class="italic font-light">prawdziwego szkolenia</span> — i dołączenie do
+                <span class="text-[#ff8c00]">High-Ticket Offer</span>
+            </h2>
+            <p class="text-zinc-500 text-sm mb-12 tracking-wide">
+                Dostęp jest ograniczony. Nie każdy kto aplikuje otrzyma dostęp.
+            </p>
+            <a href="#form-section" class="hero-btn inline-block">Złóż aplikację teraz →</a>
         </div>
+    </section>
+
+    <section id="form-section" class="py-24 px-6 bg-black border-t border-white/5">
         <div class="form-wrapper shadow-2xl shadow-orange-500/5">
             <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" allowtransparency="true"></iframe>
         </div>
