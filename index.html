@@ -3,97 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>CloseFlow | High-Ticket Sales Training</title>
+    <title>CloseFlow | High-Ticket Sales</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* RESET & ANTI-SCROLL */
+        /* GLOBAL RESET & ANTI-SCROLL */
         html, body { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
         }
         body::-webkit-scrollbar { display: none; }
-        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
 
-        /* KURSOR PREMIUM (TYLKO DESKTOP) */
+        /* KURSOR: BIAŁA KROPKA + POMARAŃCZOWY GLOW */
         @media (pointer: fine) {
-            #custom-cursor {
-                width: 100px; height: 100px;
-                background: radial-gradient(circle, rgba(255, 140, 0, 0.22) 0%, transparent 70%);
-                border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
-                transform: translate(-50%, -50%); transition: transform 0.08s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
-            }
             body, a, button, iframe { cursor: none !important; }
+            #cursor-dot {
+                width: 6px; height: 6px; background: #fff; border-radius: 50%;
+                position: fixed; pointer-events: none; z-index: 10000;
+                transform: translate(-50%, -50%); transition: transform 0.1s ease;
+            }
+            #cursor-glow {
+                width: 45px; height: 45px;
+                background: radial-gradient(circle, rgba(255, 140, 0, 0.2) 0%, transparent 70%);
+                border: 1px solid rgba(255, 140, 0, 0.25);
+                border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
+                transform: translate(-50%, -50%); 
+                transition: transform 0.15s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+            }
         }
-        @media (pointer: coarse) { #custom-cursor { display: none !important; } }
+        @media (pointer: coarse) { #cursor-dot, #cursor-glow { display: none !important; } }
 
-        /* TYPOGRAFIA & BRAND */
+        /* TYPOGRAFIA */
         .serif { font-family: 'Playfair Display', serif; }
-        .brand-logo { color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; }
+        .brand-logo { 
+            color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; 
+            text-transform: uppercase; font-size: 13px; 
+        }
 
-        /* SEKCJE Z ODCIĘCIEM (INSPIRACJA: THE CLOSER NETWORK) */
-        .vsl-section { 
-            background-color: #0d0d0d; 
-            border-bottom: 1px solid rgba(255,255,255,0.03); 
+        /* SEKCJE I GRADIENTY */
+        .vsl-section {
+            background: linear-gradient(to bottom, #0d0d0d 0%, #0d0d0d 80%, #000 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
             position: relative;
         }
-        .main-content { background-color: #000; position: relative; }
+
+        .pill-status {
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            background: rgba(255, 140, 0, 0.05);
+            color: #ff8c00; font-size: 9px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.2em;
+            padding: 10px 24px; border-radius: 50px;
+            display: inline-flex; align-items: center;
+        }
 
         /* PRZYCISK CTA */
-        .cta-btn {
-            background: #ff8c00; color: #fff; padding: 20px 50px; border-radius: 100px;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 12px;
-            box-shadow: 0 10px 40px rgba(255, 140, 0, 0.25);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .cta-premium {
+            background: #ff8c00; color: #fff; padding: 20px 52px; border-radius: 100px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px;
+            box-shadow: 0 10px 40px rgba(255, 140, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             display: inline-block;
         }
-        .cta-btn:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 20px 50px rgba(255, 140, 0, 0.45); }
+        .cta-premium:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(255, 140, 0, 0.4); }
 
-        /* FORMULARZ TALLY - IDEALNE CIĘCIE */
+        /* FORMULARZ TALLY */
         .form-frame {
             max-width: 520px; margin: 0 auto; height: 565px; overflow: hidden;
-            background: #000; border-radius: 30px; position: relative;
-            box-shadow: 0 0 100px rgba(255,140,0,0.03);
+            background: #000; border-radius: 32px; position: relative;
         }
         iframe { position: absolute; top: -5px; left: 0; width: 100%; height: 650px; border: none; }
-
-        /* ANIMACJA WEJŚCIA DLA VSL */
-        .vsl-container {
-            transform: translateY(20px); opacity: 0; animation: fadeInUp 1s forwards 0.5s;
-        }
-        @keyframes fadeInUp { to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="custom-cursor"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-glow"></div>
 
-    <nav class="pt-20 pb-12 text-center bg-[#0d0d0d]">
-        <h1 class="brand-logo text-lg md:text-xl">CloseFlow</h1>
-    </nav>
+    <div class="vsl-section">
+        <nav class="pt-10 pb-6 text-center">
+            <h1 class="brand-logo">CloseFlow</h1>
+        </nav>
 
-    <section class="vsl-section px-6 pb-28">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="mb-16">
-                <span class="border border-[#ff8c00]/30 bg-[#ff8c00]/5 text-[#ff8c00] text-[10px] font-bold uppercase tracking-[0.3em] px-8 py-3 rounded-full">
-                    • Tylko na zaproszenie •
-                </span>
-            </div>
-            
-            <div class="vsl-container rounded-[2rem] overflow-hidden border border-white/5 bg-black shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
-                <div class="aspect-video flex flex-col items-center justify-center bg-zinc-950">
-                    <div class="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4 border border-white/10">
-                        <div class="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-[#ff8c00] border-b-[8px] border-b-transparent ml-1"></div>
+        <section class="px-6 pb-20">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="mb-10">
+                    <div class="pill-status">
+                        • Złóż aplikację — liczba miejsc ograniczona •
                     </div>
-                    <p class="text-zinc-700 uppercase tracking-[0.6em] text-[9px] font-black">Prezentacja wkrótce</p>
+                </div>
+                
+                <div class="rounded-[2rem] overflow-hidden border border-white/5 bg-black shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
+                    <div class="aspect-video flex items-center justify-center bg-zinc-950">
+                        <p class="text-zinc-800 uppercase tracking-[0.5em] text-[10px] font-bold">Prezentacja CloseFlow wkrótce</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
-    <section class="main-content py-32 px-6 text-center">
+    <section class="py-32 px-6 text-center bg-black">
         <div class="max-w-4xl mx-auto">
-            <h2 class="serif text-4xl md:text-6xl lg:text-[72px] mb-12 leading-[1.1] text-white">
+            <h2 class="serif text-4xl md:text-6xl lg:text-[70px] mb-12 leading-[1.1] text-white">
                 To jest Twoja szansa na otrzymanie <br>
                 <span class="italic font-light opacity-80 text-zinc-300">prawdziwego szkolenia</span> — i dołączenie do <br>
                 <span class="text-[#ff8c00]">High-Ticket Offer</span>
@@ -103,15 +114,12 @@
                 Dostęp jest ograniczony. Nie każda osoba, która wyśle aplikację, zostanie zakwalifikowana do naszego zamkniętego networku.
             </p>
             
-            <a href="#aplikuj" class="cta-btn">Złóż aplikację teraz →</a>
+            <a href="#aplikuj" class="cta-premium">Złóż aplikację teraz →</a>
         </div>
     </section>
 
     <section id="aplikuj" class="py-32 px-6 bg-black border-t border-white/5">
-        <div class="text-center mb-16">
-            <h3 class="text-zinc-400 text-[10px] font-bold uppercase tracking-[0.5em]">Formularz rekrutacyjny</h3>
-        </div>
-        <div class="form-frame">
+        <div class="form-frame shadow-2xl shadow-orange-500/5">
             <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" allowtransparency="true"></iframe>
         </div>
     </section>
@@ -121,28 +129,35 @@
     </footer>
 
     <script>
-        const cursor = document.getElementById('custom-cursor');
+        const dot = document.getElementById('cursor-dot');
+        const glow = document.getElementById('cursor-glow');
         
         if (window.matchMedia("(pointer: fine)").matches) {
             document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
+                dot.style.left = e.clientX + 'px';
+                dot.style.top = e.clientY + 'px';
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
                 
-                // Inteligentne wykrywanie obszaru formularza
                 const form = document.querySelector('.form-frame');
                 const rect = form.getBoundingClientRect();
                 
                 if (e.clientX >= rect.left && e.clientX <= rect.right &&
                     e.clientY >= rect.top && e.clientY <= rect.bottom) {
-                    cursor.style.opacity = '0';
+                    dot.style.opacity = '0';
+                    glow.style.opacity = '0';
                 } else {
-                    cursor.style.opacity = '1';
+                    dot.style.opacity = '1';
+                    glow.style.opacity = '1';
                 }
             });
 
-            // Reakcja na klik
-            document.addEventListener('mousedown', () => cursor.style.transform = 'translate(-50%, -50%) scale(0.6)');
-            document.addEventListener('mouseup', () => cursor.style.transform = 'translate(-50%, -50%) scale(1)');
+            document.addEventListener('mousedown', () => {
+                glow.style.transform = 'translate(-50%, -50%) scale(0.7)';
+            });
+            document.addEventListener('mouseup', () => {
+                glow.style.transform = 'translate(-50%, -50%) scale(1)';
+            });
         }
     </script>
 </body>
