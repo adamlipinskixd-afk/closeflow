@@ -7,54 +7,73 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
+        /* GŁĘBOKA CZERŃ I TYPOGRAFIA */
         body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; }
-        .orange-glow { color: #ff8c00; text-shadow: 0 0 15px rgba(255,140,0,0.5); }
-        .card-bg { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); transition: 0.3s; }
-        .card-bg:hover { border-color: #ff8c00; background: rgba(255, 255, 255, 0.04); }
-        .line-draw { border-left: 2px solid rgba(255, 140, 0, 0.3); }
+        
+        .orange-glow { 
+            color: #ff8c00; 
+            text-shadow: 0 0 20px rgba(255,140,0,0.4);
+            animation: pulse-glow 3s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* NAPRAWA FORMULARZA - ŻEBY SIĘ NIE ZLEWAŁ */
+        .tally-container {
+            background: #000; /* Wymuszamy czarne tło pod kontenerem */
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255,140,0,0.1);
+        }
+
+        /* ANIMACJA ZMIENIAJĄCYCH SIĘ NAPISÓW */
+        .word-flicker {
+            display: inline-block;
+            min-width: 200px;
+        }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
     <div class="max-w-5xl mx-auto px-6 py-24 text-center">
-        <p class="text-[10px] tracking-[0.5em] orange-glow mb-8 uppercase font-bold" data-aos="fade-up">Invitation Only • 2026 Batch</p>
-        <h1 class="text-5xl md:text-7xl font-black mb-12 italic uppercase tracking-tighter" data-aos="fade-up">
-            What You <span class="orange-glow">Gain</span>
+        <h1 class="text-6xl md:text-8xl font-black mb-12 italic uppercase tracking-tighter">
+            Elite <span class="orange-glow word-flicker" id="dynamic-word">Closing</span>
         </h1>
 
-        <div class="rounded-3xl overflow-hidden border border-white/10 mb-32 shadow-2xl shadow-orange-500/10" data-aos="zoom-in">
-            <div class="aspect-video bg-zinc-900 flex items-center justify-center">
-                <p class="text-zinc-500">Miejsce na Twoje VSL (Wideo)</p>
+        <div class="rounded-3xl overflow-hidden border border-white/10 mb-32 bg-zinc-950 shadow-inner">
+            <div class="aspect-video flex items-center justify-center">
+                <p class="text-zinc-600 tracking-widest uppercase text-xs">Waiting for VSL signal...</p>
             </div>
         </div>
 
-        <h2 class="text-3xl font-bold mb-16 uppercase tracking-widest text-zinc-400">The Process</h2>
-        <div class="grid md:grid-cols-3 gap-8 mb-32 text-left">
-            <div class="p-8 rounded-2xl card-bg" data-aos="fade-up" data-aos-delay="100">
-                <div class="text-orange-500 text-sm font-bold mb-4 italic">STEP 01</div>
-                <h3 class="text-xl font-bold mb-3">Application</h3>
-                <p class="text-zinc-500 text-sm leading-relaxed">Fill out the form below. We filter for hunger, experience, and mindset.</p>
-            </div>
-            <div class="p-8 rounded-2xl card-bg" data-aos="fade-up" data-aos-delay="200">
-                <div class="text-orange-500 text-sm font-bold mb-4 italic">STEP 02</div>
-                <h3 class="text-xl font-bold mb-3">The Interview</h3>
-                <p class="text-zinc-500 text-sm leading-relaxed">A 15-minute diagnostic call to see if you're a fit for our current high-ticket offers.</p>
-            </div>
-            <div class="p-8 rounded-2xl card-bg" data-aos="fade-up" data-aos-delay="300">
-                <div class="text-orange-500 text-sm font-bold mb-4 italic">STEP 03</div>
-                <h3 class="text-xl font-bold mb-3">Placement</h3>
-                <h3 class="text-xl font-bold mb-3">Placement</h3>
-                <p class="text-zinc-500 text-sm leading-relaxed">Get deployed into a validated offer and start closing deals immediately.</p>
-            </div>
-        </div>
-
-        <div id="apply" class="max-w-2xl mx-auto border-t border-white/10 pt-24" data-aos="fade-up">
-            <h2 class="text-2xl font-bold mb-12 uppercase">Apply for Membership</h2>
-            <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1" width="100%" height="800" frameborder="0"></iframe>
+        <div class="tally-container max-w-2xl mx-auto shadow-2xl shadow-orange-500/5">
+            <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" 
+                    width="100%" 
+                    height="600" 
+                    frameborder="0" 
+                    title="Application Form"></iframe>
         </div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init({ duration: 1000, once: true });</script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        // LOGIKA ZMIENIAJĄCYCH SIĘ NAPISÓW
+        const words = ["Closing", "Network", "Flow", "Success"];
+        let i = 0;
+        setInterval(() => {
+            const wordEl = document.getElementById('dynamic-word');
+            wordEl.style.opacity = 0;
+            setTimeout(() => {
+                i = (i + 1) % words.length;
+                wordEl.innerText = words[i];
+                wordEl.style.opacity = 1;
+            }, 500);
+        }, 3000);
+    </script>
 </body>
 </html>
