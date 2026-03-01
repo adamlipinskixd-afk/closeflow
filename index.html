@@ -7,42 +7,52 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
-        /* PODSTAWA */
         body, html { 
             background-color: #000; 
             color: #fff; 
             font-family: 'Inter', sans-serif; 
             margin: 0;
             overflow-x: hidden;
-            cursor: none !important; /* Ukrywamy systemowy kursor */
         }
 
-        /* CUSTOM CURSOR - PUNKT (3) */
-        #custom-cursor {
-            width: 12px;
-            height: 12px;
-            background: #ff8c00;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 999999;
-            box-shadow: 0 0 15px #ff8c00, 0 0 30px #ff8c00;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
+        /* ELEGANCKI GLOWING KURSOR (TYLKO DESKTOP) */
+        @media (pointer: fine) {
+            body, html, iframe { cursor: none !important; }
+            #custom-cursor {
+                width: 150px; /* Duży obszar blasku */
+                height: 150px;
+                background: radial-gradient(circle, rgba(255, 140, 0, 0.15) 0%, transparent 70%);
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 999999;
+                transform: translate(-50%, -50%);
+                transition: transform 0.15s ease-out; /* Delikatne opóźnienie dla płynności */
+                display: block;
+            }
+            /* Mały punkt w samym centrum blasku dla precyzji */
+            #custom-cursor::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 6px;
+                height: 6px;
+                background: #ff8c00;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                box-shadow: 0 0 15px #ff8c00;
+            }
         }
 
-        /* LOGO I LINIA (2) */
-        .brand-logo { 
-            color: #ff8c00; 
-            letter-spacing: 0.5em; 
-            font-weight: 300; 
-            text-transform: uppercase; 
+        /* UKRYWANIE NA DOTYKU */
+        @media (pointer: coarse) {
+            #custom-cursor { display: none !important; }
+            body, html, iframe { cursor: auto !important; }
         }
-        .divider-line { 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
-            width: 100%; 
-            margin-bottom: 50px; 
-        }
+
+        .brand-logo { color: #ff8c00; letter-spacing: 0.5em; font-weight: 300; text-transform: uppercase; }
+        .divider-line { border-bottom: 1px solid rgba(255, 255, 255, 0.08); width: 100%; margin-bottom: 50px; }
 
         /* PULSUJĄCA PIGUŁKA */
         .pill-button {
@@ -60,30 +70,37 @@
             animation: pulse-glow 3s infinite ease-in-out;
         }
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.1); border-color: rgba(255, 140, 0, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.3); border-color: rgba(255, 140, 0, 0.8); }
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.3); }
         }
 
-        /* SZKLANE VSL (1) */
+        /* SZKLANE VSL */
         .glass-vsl {
             background: rgba(255, 255, 255, 0.01);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 140, 0, 0.1);
-            position: relative;
         }
 
-        /* KONTENER FORMULARZA - UKRYWANIE STOPKI (4) */
+        /* FORMULARZ - AGRESYWNE CIĘCIE STOPKI */
         .form-wrapper {
             max-width: 550px;
             margin: 0 auto;
-            height: 560px; /* Przycinamy, żeby nie było widać "Made by Tally" */
+            height: 565px; 
             overflow: hidden;
             background: #000;
             border-radius: 20px;
+            position: relative;
         }
-
-        /* Wymuszamy brak kursora na iframe */
-        iframe { cursor: none !important; }
+        
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 650px;
+            border: none;
+            background: transparent;
+        }
     </style>
 </head>
 <body>
@@ -113,10 +130,7 @@
 
         <div class="form-wrapper shadow-2xl shadow-orange-500/5">
             <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" 
-                    width="100%" 
-                    height="650" 
-                    frameborder="0"
-                    style="cursor: none !important;"></iframe>
+                    allowtransparency="true"></iframe>
         </div>
 
     </div>
@@ -124,19 +138,23 @@
     <script>
         const cursor = document.getElementById('custom-cursor');
         
-        // Ruch kropki
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
+        // Logika kursora tylko dla urządzeń z myszką
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
 
-        // Reakcja na kliknięcie
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(0.7)';
-        });
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-        });
+            // Efekt kliknięcia (blask się kurczy i intensyfikuje)
+            document.addEventListener('mousedown', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(0.5)';
+                cursor.style.background = 'radial-gradient(circle, rgba(255, 140, 0, 0.3) 0%, transparent 70%)';
+            });
+            document.addEventListener('mouseup', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.background = 'radial-gradient(circle, rgba(255, 140, 0, 0.15) 0%, transparent 70%)';
+            });
+        }
     </script>
 </body>
 </html>
