@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
+        /* BASE SETUP */
         html, body { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
@@ -14,20 +15,22 @@
         body::-webkit-scrollbar { display: none; }
         * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
 
-        /* KURSOR: SYSTEMOWY + GLOW */
+        /* KURSOR SYSTEMOWY + GLOW OBRAMÓWKA */
         @media (pointer: fine) {
             #cursor-glow {
                 width: 60px; height: 60px;
-                background: radial-gradient(circle, rgba(255, 140, 0, 0.2) 0%, transparent 70%);
-                border: 1px solid rgba(255, 140, 0, 0.2);
+                background: radial-gradient(circle, rgba(255, 140, 0, 0.15) 0%, transparent 70%);
+                border: 1px solid rgba(255, 140, 0, 0.3);
                 border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
-                transform: translate(-50%, -50%); transition: transform 0.1s linear;
+                transform: translate(-50%, -50%); transition: transform 0.08s ease-out;
             }
         }
 
+        /* TYPOGRAFIA */
         .serif { font-family: 'Playfair Display', serif; }
         .brand-logo { color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
+        /* SEKCJA VSL - GRAFITOWY GRADIENT */
         .vsl-section {
             background: linear-gradient(to bottom, #0d0d0d 0%, #0d0d0d 85%, #000 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
@@ -37,62 +40,70 @@
             border: 1px solid rgba(255, 140, 0, 0.4); background: rgba(255, 140, 0, 0.05);
             color: #ff8c00; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
             padding: 10px 24px; border-radius: 50px; display: inline-flex; align-items: center;
-            animation: pulse-glow-border 2s infinite ease-in-out;
+            animation: pulse-glow 2s infinite ease-in-out;
         }
-        @keyframes pulse-glow-border {
-            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.4); }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.2); transform: scale(1); }
+            50% { box-shadow: 0 0 15px rgba(255, 140, 0, 0.4); transform: scale(1.02); }
         }
 
-        /* VSL CONTAINER SYSTEM */
+        /* VSL PLAYER - LIQUID GLASS SYSTEM */
         .vsl-container {
-            max-width: 900px; margin: 0 auto; position: relative;
-            border-radius: 1.5rem; overflow: hidden;
-            background: #000; border: 1px solid rgba(255,255,255,0.05);
-            aspect-ratio: 16/9; box-shadow: 0 30px 100px rgba(0,0,0,0.9);
+            max-width: 940px; margin: 0 auto; position: relative;
+            border-radius: 2rem; overflow: hidden;
+            background: #050505; border: 1px solid rgba(255,255,255,0.05);
+            aspect-ratio: 16/9; box-shadow: 0 50px 120px rgba(0,0,0,0.9);
         }
 
-        #yt-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; }
+        #yt-player { 
+            position: absolute; top: -2px; left: -2px; width: calc(100% + 4px); height: calc(100% + 4px); 
+            z-index: 1; pointer-events: none;
+        }
 
-        /* LIQUID GLASS OVERLAY */
+        /* SZKLANA WARSTWA STARTOWA */
         #video-overlay {
-            position: absolute; inset: 0; z-index: 20;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            background: rgba(0,0,0,0.4);
+            position: absolute; inset: 0; z-index: 10;
+            backdrop-filter: blur(25px) saturate(180%); -webkit-backdrop-filter: blur(25px) saturate(180%);
+            background: rgba(0,0,0,0.3);
             display: flex; align-items: center; justify-content: center;
-            transition: all 0.5s ease;
+            transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        .glass-pill {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 140, 0, 0.5); border-radius: 100px;
-            padding: 14px 32px; color: #fff; font-weight: 600;
-            display: flex; align-items: center; gap: 10px; cursor: pointer;
-            transition: all 0.3s ease;
+        /* PRZYCISK LIQUID GLASS - ODSŁUCHAJ */
+        .liquid-pill {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 100px;
+            padding: 16px 36px; color: #fff; font-weight: 500; font-size: 16px;
+            display: flex; align-items: center; gap: 14px; cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), inset 0 0 20px rgba(255,255,255,0.05);
+            transition: all 0.4s ease;
         }
-        .glass-pill:hover { transform: scale(1.05); background: rgba(255,255,255,0.08); }
+        .liquid-pill:hover { border-color: #ff8c00; box-shadow: 0 0 30px rgba(255, 140, 0, 0.2); transform: scale(1.05); }
 
-        /* PLAY/PAUSE MINI GLASS */
+        /* MINI STEROWANIE LIQUID GLASS */
         #mini-controls {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 15; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            z-index: 20; opacity: 0; transition: opacity 0.5s ease;
         }
-        .glass-circle {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 140, 0, 0.3);
+        .liquid-circle {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
             display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.3s ease;
         }
+        .liquid-circle:hover { border-color: #ff8c00; background: rgba(255, 140, 0, 0.1); }
 
+        /* TEXT SECTIONS */
         .cta-premium {
-            background: #ff8c00; color: #fff; padding: 20px 52px; border-radius: 100px;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px;
-            box-shadow: 0 10px 40px rgba(255, 140, 0, 0.2); transition: all 0.4s ease; display: inline-block;
+            background: #ff8c00; color: #fff; padding: 22px 60px; border-radius: 100px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 13px;
+            box-shadow: 0 15px 45px rgba(255, 140, 0, 0.3); transition: all 0.4s ease; display: inline-block;
         }
-        .cta-premium:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(255, 140, 0, 0.4); }
+        .cta-premium:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(255, 140, 0, 0.5); }
 
-        .form-frame { max-width: 520px; margin: 0 auto; height: 565px; overflow: hidden; border-radius: 32px; background: #000; }
+        .form-frame { max-width: 540px; margin: 0 auto; height: 580px; overflow: hidden; border-radius: 40px; background: #000; }
     </style>
 </head>
 <body>
@@ -100,20 +111,24 @@
     <div id="cursor-glow"></div>
 
     <div class="vsl-section">
-        <nav class="pt-10 pb-6 text-center">
+        <nav class="pt-12 pb-8 text-center">
             <h1 class="brand-logo">CloseFlow</h1>
         </nav>
 
-        <section class="px-6 pb-24">
+        <section class="px-6 pb-28">
             <div class="max-w-5xl mx-auto text-center">
-                <div class="mb-10">
-                    <div class="pill-status">• Złóż aplikację — liczba miejsc ograniczona •</div>
+                <div class="mb-12">
+                    <div class="pill-status">
+                        • Złóż aplikację — liczba miejsc ograniczona •
+                    </div>
                 </div>
                 
-                <div class="vsl-container" id="vsl-box">
+                <div class="vsl-container">
                     <div id="video-overlay">
-                        <button class="glass-pill" onclick="startVideo()">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                        <button class="liquid-pill" onclick="handleStart()">
+                            <span class="w-8 h-8 rounded-full bg-[#ff8c00] flex items-center justify-center shadow-lg">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            </span>
                             Odsłuchaj
                         </button>
                     </div>
@@ -121,8 +136,10 @@
                     <div id="yt-player"></div>
 
                     <div id="mini-controls">
-                        <div class="glass-circle" onclick="togglePlay()">
-                            <svg id="p-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                        <div class="liquid-circle" onclick="handleToggle()">
+                            <svg id="p-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -130,13 +147,16 @@
         </section>
     </div>
 
-    <section class="py-32 px-6 text-center bg-black">
+    <section class="py-36 px-6 text-center bg-black">
         <div class="max-w-4xl mx-auto">
-            <h2 class="serif text-4xl md:text-6xl lg:text-[70px] mb-12 leading-[1.1] text-white">
+            <h2 class="serif text-5xl md:text-7xl mb-12 leading-[1.05] text-white">
                 To jest Twoja szansa na otrzymanie <br>
                 <span class="italic font-light opacity-80 text-zinc-300">prawdziwego szkolenia</span> — i dołączenie do <br>
                 <span class="text-[#ff8c00]">High-Ticket Offer</span>
             </h2>
+            <p class="text-zinc-500 text-lg mb-20 tracking-wide max-w-2xl mx-auto font-light leading-relaxed">
+                Dostęp jest ograniczony. Nie każda osoba, która wyśle aplikację, zostanie zakwalifikowana do naszego zamkniętego networku.
+            </p>
             <a href="#aplikuj" class="cta-premium">Złóż aplikację teraz →</a>
         </div>
     </section>
@@ -147,25 +167,43 @@
         </div>
     </section>
 
+    <footer class="py-16 text-center bg-black border-t border-white/5">
+        <p class="text-zinc-800 text-[11px] tracking-[0.4em] uppercase">© 2026 CloseFlow. Wszystkie prawa zastrzeżone.</p>
+    </footer>
+
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: 'nLx-ZWkzIEI',
-                playerVars: { 'autoplay': 0, 'controls': 0, 'rel': 0, 'modestbranding': 1 },
+                playerVars: { 
+                    'autoplay': 0, 
+                    'controls': 0, 
+                    'rel': 0, 
+                    'modestbranding': 1,
+                    'disablekb': 1,
+                    'iv_load_policy': 3
+                },
                 events: { 'onStateChange': onPlayerStateChange }
             });
         }
 
-        function startVideo() {
-            document.getElementById('video-overlay').style.opacity = '0';
-            setTimeout(() => { document.getElementById('video-overlay').style.display = 'none'; }, 500);
+        function handleStart() {
+            const overlay = document.getElementById('video-overlay');
+            overlay.style.backdropFilter = "blur(0px)";
+            overlay.style.background = "rgba(0,0,0,0)";
+            overlay.style.opacity = "0";
+            
+            setTimeout(() => { 
+                overlay.style.display = 'none'; 
+                document.getElementById('mini-controls').style.opacity = '1';
+            }, 800);
+            
             player.playVideo();
-            document.getElementById('mini-controls').style.opacity = '1';
         }
 
-        function togglePlay() {
+        function handleToggle() {
             const state = player.getPlayerState();
             if (state === 1) player.pauseVideo();
             else player.playVideo();
@@ -176,11 +214,11 @@
             if (event.data === 1) { // Playing
                 icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
             } else { // Paused
-                icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+                icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3" fill="#fff"></polygon>';
             }
         }
 
-        // CURSOR
+        // KURSOR GLOW
         const glow = document.getElementById('cursor-glow');
         document.addEventListener('mousemove', (e) => {
             glow.style.left = e.clientX + 'px';
