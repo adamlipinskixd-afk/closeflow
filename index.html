@@ -119,7 +119,6 @@
                             Odsłuchaj nagranie
                         </button>
                     </div>
-
                     <div id="yt-player"></div>
                 </div>
             </div>
@@ -156,26 +155,18 @@
         const tallyBox = document.getElementById('tally-box');
         const vslBox = document.getElementById('vsl-box');
 
-        // YouTube API Init
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: 'nLx-ZWkzIEI',
                 playerVars: { 
-                    'autoplay': 0, 
-                    'controls': 1, 
-                    'rel': 0, 
-                    'modestbranding': 1,
-                    'iv_load_policy': 3,
-                    'showinfo': 0
+                    'autoplay': 0, 'controls': 1, 'rel': 0, 'modestbranding': 1,
+                    'iv_load_policy': 3, 'showinfo': 0
                 },
-                events: {
-                    'onReady': onPlayerReady
-                }
+                events: { 'onReady': onPlayerReady }
             });
         }
 
         function onPlayerReady(event) {
-            // Buffer trick
             event.target.mute();
             event.target.playVideo();
             setTimeout(() => {
@@ -184,51 +175,33 @@
             }, 500);
         }
 
-        // Load YouTube SDK
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Start function
         function startVSL() {
             const overlay = document.getElementById('video-overlay');
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
-                if (player && player.playVideo) {
-                    player.playVideo();
-                }
+                if (player && player.playVideo) player.playVideo();
             }, 600);
         }
 
-        // Kursor Glow Logic - teraz chowający się również nad Video
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
                 glow.style.left = e.clientX + 'px';
                 glow.style.top = e.clientY + 'px';
 
-                // Sprawdzanie Formularza
                 const fRect = tallyBox.getBoundingClientRect();
-                const isOverForm = (
-                    e.clientX >= fRect.left && e.clientX <= fRect.right && 
-                    e.clientY >= fRect.top && e.clientY <= fRect.bottom
-                );
-
-                // Sprawdzanie Video
+                const isOverForm = (e.clientX >= fRect.left && e.clientX <= fRect.right && e.clientY >= fRect.top && e.clientY <= fRect.bottom);
+                
                 const vRect = vslBox.getBoundingClientRect();
-                const isOverVideo = (
-                    e.clientX >= vRect.left && e.clientX <= vRect.right && 
-                    e.clientY >= vRect.top && e.clientY <= vRect.bottom
-                );
+                const isOverVideo = (e.clientX >= vRect.left && e.clientX <= vRect.right && e.clientY >= vRect.top && e.clientY <= vRect.bottom);
 
-                // Ukryj glow jeśli nad którymś z elementów
-                if (isOverForm || isOverVideo) {
-                    glow.style.opacity = '0';
-                } else {
-                    glow.style.opacity = '1';
-                }
+                glow.style.opacity = (isOverForm || isOverVideo) ? '0' : '1';
             });
         }
     </script>
