@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* --- BAZA I RESET --- */
+        /* --- GLOBALNE RESETOWANIE --- */
         html, body { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
@@ -28,7 +28,7 @@
         .serif { font-family: 'Playfair Display', serif; }
         .brand-logo { color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
-        /* --- VSL SECTION --- */
+        /* --- SEKCJA VSL --- */
         .vsl-section {
             background: radial-gradient(circle at top, #111 0%, #000 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -78,7 +78,7 @@
         .cta-premium {
             background: #ff8c00; color: #fff; padding: 24px 70px; border-radius: 100px;
             font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; font-size: 13px;
-            display: inline-block; transition: 0.4s;
+            display: inline-block; transition: 0.4s; text-decoration: none;
         }
         .cta-premium:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(255, 140, 0, 0.3); }
 
@@ -140,14 +140,9 @@
         <p class="text-[10px] tracking-[0.5em] uppercase">© 2026 CloseFlow</p>
     </footer>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        // Ta funkcja MUSI być przed ładowaniem skryptu YouTube
         let player;
-        const overlay = document.getElementById('video-overlay');
-        const glow = document.getElementById('cursor-glow');
-        const tallyBox = document.getElementById('tally-box');
-
-        // Ładowanie API YouTube
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: 'nLx-ZWkzIEI',
@@ -157,28 +152,43 @@
                     'rel': 0, 
                     'modestbranding': 1,
                     'iv_load_policy': 3
+                },
+                events: {
+                    'onReady': function(event) {
+                        console.log("YouTube Player is ready");
+                    }
                 }
             });
         }
 
-        // Funkcja startu wideo po kliknięciu w szklany przycisk
+        // Ładowanie API YouTube asynchronicznie
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Funkcja startu wideo
         function startVSL() {
+            const overlay = document.getElementById('video-overlay');
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
-                player.playVideo();
+                if (player && player.playVideo) {
+                    player.playVideo();
+                }
             }, 800);
         }
 
         // Obsługa kursora Glow i chowania go nad Tally
+        const glow = document.getElementById('cursor-glow');
+        const tallyBox = document.getElementById('tally-box');
+
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
-                // Pozycjonowanie glow
                 glow.style.left = e.clientX + 'px';
                 glow.style.top = e.clientY + 'px';
 
-                // Sprawdzanie czy kursor jest nad obszarem formularza
                 const rect = tallyBox.getBoundingClientRect();
                 const isOverForm = (
                     e.clientX >= rect.left && 
@@ -187,7 +197,6 @@
                     e.clientY <= rect.bottom
                 );
 
-                // Ukrywanie glow jeśli nad formularzem, inaczej pokazuj
                 if (isOverForm) {
                     glow.style.opacity = '0';
                 } else {
