@@ -34,7 +34,6 @@
             transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Ta klasa będzie nadawana przez JS gdy sekcja wejdzie w pole widzenia */
         .section-visible {
             opacity: 1 !important;
             transform: translateY(0) !important;
@@ -188,28 +187,30 @@
             overflow: hidden; position: relative;
         }
 
-        /* --- NOWA SEKCJA: DOŁĄCZ DO CLOSEFLOW --- */
+        /* --- FINAL CTA SECTION --- */
         .final-cta-btn {
-            background: linear-gradient(to right, #e65c00, #f9d423);
-            color: #000;
-            padding: 20px 50px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
+            background: linear-gradient(135deg, #002b5c 0%, #0047ab 100%);
+            color: #fff;
+            padding: 22px 55px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.2em;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 20px 40px rgba(230, 92, 0, 0.2);
+            gap: 15px;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 1px solid rgba(93, 169, 255, 0.3);
             text-decoration: none;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         .final-cta-btn:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 30px 60px rgba(230, 92, 0, 0.4);
-            filter: brightness(1.1);
+            transform: translateY(-5px) scale(1.02);
+            border-color: #5da9ff;
+            box-shadow: 0 25px 60px rgba(0, 71, 171, 0.3);
+            background: linear-gradient(135deg, #003673 0%, #0056cc 100%);
         }
     </style>
 </head>
@@ -277,11 +278,11 @@
     <section class="hidden-section py-32 px-6 text-center">
         <div class="max-w-3xl mx-auto">
             <h2 class="serif-premium text-5xl md:text-7xl mb-6 text-white">Dołącz do CloseFlow</h2>
-            <p class="text-zinc-400 text-lg mb-12 font-light leading-relaxed">
+            <p class="text-[#99ccff] text-lg mb-12 font-light leading-relaxed opacity-80">
                 Jeżeli wniosek zostanie rozpatrzony pozytywnie<br class="hidden md:block"> ktoś z naszego zespołu się z Tobą skontaktuje.
             </p>
             <a href="#aplikuj" class="final-cta-btn">
-                <span>Wypełnij wniosek</span>
+                <span>Wyślij zgłoszenie</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
         </div>
@@ -302,7 +303,6 @@
         const btnText = document.getElementById('btn-text');
         const overlay = document.getElementById('video-overlay');
 
-        // --- LOGIKA SCROLL REVEAL ---
         const revealOnScroll = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -318,7 +318,6 @@
             revealOnScroll.observe(section);
         });
 
-        // 1. Ładowanie API YouTube
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -345,19 +344,13 @@
 
         function onPlayerReady(event) {
             isPlayerReady = true;
+            // Zapobieganie autostartowi: wyciszamy i pauzujemy natychmiast
             event.target.mute();
-            event.target.playVideo();
-            
-            setTimeout(() => {
-                if (!playRequested) {
-                    event.target.pauseVideo();
-                    event.target.unMute();
-                }
-            }, 600);
+            event.target.pauseVideo();
         }
 
         function onPlayerStateChange(event) {
-            if (event.data == 1) { // YT.PlayerState.PLAYING
+            if (event.data == 1) { // PLAYING
                 overlay.style.opacity = '0';
                 setTimeout(() => {
                     overlay.style.display = 'none';
@@ -370,10 +363,8 @@
             if (isPlayerReady && player) {
                 player.unMute();
                 player.playVideo();
-                overlay.style.opacity = '0';
-                setTimeout(() => { overlay.style.display = 'none'; }, 600);
             } else {
-                btnText.innerText = "Inicjalizacja...";
+                btnText.innerText = "Ładowanie...";
                 let checkReady = setInterval(() => {
                     if (isPlayerReady) {
                         player.unMute();
@@ -384,19 +375,15 @@
             }
         }
 
-        // Kursor glow (tylko desktop)
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
                 glow.style.left = e.clientX + 'px';
                 glow.style.top = e.clientY + 'px';
-
                 const fRect = tallyBox.getBoundingClientRect();
                 const isOverForm = (e.clientX >= fRect.left && e.clientX <= fRect.right && e.clientY >= fRect.top && e.clientY <= fRect.bottom);
-                
                 const vRect = vslBox.getBoundingClientRect();
                 const isOverVideo = (e.clientX >= vRect.left && e.clientX <= vRect.right && e.clientY >= vRect.top && e.clientY <= vRect.bottom);
-
                 glow.style.opacity = (isOverForm || isOverVideo) ? '0' : '1';
             });
         }
