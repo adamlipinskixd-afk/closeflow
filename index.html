@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* --- FUNDAMENTY --- */
+        /* --- GLOBALNE --- */
         html, body { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
@@ -15,24 +15,20 @@
         body::-webkit-scrollbar { display: none; }
         * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
 
-        /* --- KURSOR PREMIUM --- */
+        /* --- KURSOR GLOW --- */
         #cursor-glow {
-            width: 60px; height: 60px;
-            background: radial-gradient(circle, rgba(255, 140, 0, 0.2) 0%, transparent 70%);
-            border: 1px solid rgba(255, 140, 0, 0.3);
-            border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
-            transform: translate(-50%, -50%); transition: opacity 0.3s ease, transform 0.1s linear;
-            display: none; 
+            width: 65px; height: 65px;
+            background: radial-gradient(circle, rgba(255, 140, 0, 0.2) 0%, transparent 75%);
+            border: 1px solid rgba(255, 140, 0, 0.25);
+            border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000;
+            transform: translate(-50%, -50%); transition: opacity 0.3s ease;
+            display: none; /* Aktywowane przez JS na desktopie */
         }
 
-        /* --- TYPOGRAFIA I BRANDING --- */
         .serif { font-family: 'Playfair Display', serif; }
-        .brand-logo { 
-            color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; 
-            text-transform: uppercase; font-size: 13px; 
-        }
+        .brand-logo { color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
-        /* --- SEKCJA VSL --- */
+        /* --- VSL SECTION --- */
         .vsl-section {
             background: radial-gradient(circle at top, #111 0%, #000 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -43,66 +39,63 @@
             border: 1px solid rgba(255, 140, 0, 0.4); background: rgba(255, 140, 0, 0.05);
             color: #ff8c00; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
             padding: 12px 28px; border-radius: 50px; display: inline-flex; align-items: center;
-            animation: pulse-glow-vsl 2.5s infinite ease-in-out;
+            animation: pulse-glow-vsl 2s infinite ease-in-out;
         }
         @keyframes pulse-glow-vsl {
-            0%, 100% { box-shadow: 0 0 10px rgba(255, 140, 0, 0.1); transform: scale(1); }
-            50% { box-shadow: 0 0 25px rgba(255, 140, 0, 0.3); transform: scale(1.02); }
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 140, 0, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(255, 140, 0, 0.4); }
         }
 
-        /* --- VSL CONTAINER (THE CLOSER NETWORK STYLE) --- */
+        /* --- VSL CONTAINER (STYL THE CLOSER NETWORK) --- */
         .vsl-container {
             max-width: 960px; margin: 0 auto; position: relative;
             border-radius: 2.5rem; overflow: hidden;
-            background: #000; border: 1px solid rgba(255,255,255,0.07);
+            background: #000; border: 1px solid rgba(255,255,255,0.08);
             aspect-ratio: 16/9; box-shadow: 0 80px 150px rgba(0,0,0,0.9);
         }
 
-        /* Ukrywamy YouTube pod maską i lekko powiększamy by uciąć UI */
-        #player-container {
+        /* Maska ucinająca branding YT */
+        #player-wrapper {
             position: absolute; inset: 0; z-index: 1;
-            transform: scale(1.05); /* Tnie logo i napisy YT */
+            transform: scale(1.06); 
         }
         #yt-player { width: 100%; height: 100%; pointer-events: none; }
 
         /* --- LIQUID GLASS OVERLAY --- */
         #video-overlay {
-            position: absolute; inset: 0; z-index: 10;
+            position: absolute; inset: 0; z-index: 20;
             backdrop-filter: blur(45px) saturate(160%); -webkit-backdrop-filter: blur(45px) saturate(160%);
             background: rgba(0,0,0,0.4);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease;
         }
 
-        .liquid-pill {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        .liquid-glass-btn {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 100px;
-            padding: 18px 42px; color: #fff; font-weight: 500; font-size: 17px;
+            padding: 20px 45px; color: #fff; font-weight: 500; font-size: 17px;
             display: flex; align-items: center; gap: 15px; cursor: pointer;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.05);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
             transition: all 0.4s ease;
         }
-        .liquid-pill:hover { 
-            border-color: #ff8c00; transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 40px 80px rgba(255, 140, 0, 0.15);
-        }
+        .liquid-glass-btn:hover { transform: scale(1.05); border-color: #ff8c00; }
 
-        /* --- STEROWANIE PO STARCIE --- */
-        #custom-controls {
+        /* --- MINI CONTROLS PO STARCIE --- */
+        #mini-controls {
             position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%);
-            z-index: 20; opacity: 0; pointer-events: none; transition: opacity 0.6s ease;
+            z-index: 30; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
         }
         .glass-circle {
             width: 70px; height: 70px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5); transition: all 0.3s ease;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6); transition: 0.3s;
         }
-        .glass-circle:hover { border-color: #ff8c00; background: rgba(255, 140, 0, 0.1); }
+        .glass-circle:hover { border-color: #ff8c00; transform: scale(1.1); }
 
-        /* --- CTA I FORMULARZ --- */
+        /* --- SEKACJA CTA I FORMULARZA --- */
         .cta-premium {
             background: #ff8c00; color: #fff; padding: 24px 70px; border-radius: 100px;
             font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; font-size: 13px;
@@ -132,9 +125,9 @@
                     <div class="pill-status">• Złóż aplikację — liczba miejsc ograniczona •</div>
                 </div>
                 
-                <div class="vsl-container">
+                <div class="vsl-container" id="vsl-box">
                     <div id="video-overlay">
-                        <button class="liquid-pill" onclick="initVideo()">
+                        <button class="liquid-glass-btn" onclick="startVSL()">
                             <span class="w-10 h-10 rounded-full bg-[#ff8c00] flex items-center justify-center shadow-lg">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                             </span>
@@ -142,13 +135,13 @@
                         </button>
                     </div>
 
-                    <div id="player-container">
+                    <div id="player-wrapper">
                         <div id="yt-player"></div>
                     </div>
 
-                    <div id="custom-controls">
-                        <button class="glass-circle" onclick="togglePlayPause()">
-                            <svg id="p-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <div id="mini-controls">
+                        <button class="glass-circle" onclick="toggleVSL()">
+                            <svg id="p-icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>
                             </svg>
                         </button>
@@ -165,9 +158,6 @@
                 <span class="italic font-light opacity-80 text-zinc-300">prawdziwego szkolenia</span> — i dołączenie do <br>
                 <span class="text-[#ff8c00]">High-Ticket Offer</span>
             </h2>
-            <p class="text-zinc-500 text-lg mb-20 tracking-wide max-w-2xl mx-auto font-light leading-relaxed">
-                Po obejrzeniu wideo, wypełnij poniższy formularz aplikacyjny. Skontaktujemy się tylko z wybranymi osobami.
-            </p>
             <a href="#aplikuj" class="cta-premium">Złóż aplikację teraz →</a>
         </div>
     </section>
@@ -179,67 +169,64 @@
     </section>
 
     <footer class="py-20 text-center bg-black border-t border-white/5">
-        <p class="text-zinc-800 text-[10px] tracking-[0.5em] uppercase">© 2026 CloseFlow. All rights reserved.</p>
+        <p class="text-zinc-800 text-[10px] tracking-[0.5em] uppercase">© 2026 CloseFlow</p>
     </footer>
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
         const overlay = document.getElementById('video-overlay');
-        const controls = document.getElementById('custom-controls');
+        const controls = document.getElementById('mini-controls');
         const icon = document.getElementById('p-icon');
         const glow = document.getElementById('cursor-glow');
         const tallyBox = document.getElementById('tally-box');
 
-        // 1. YouTube API Setup
+        // Inicjalizacja YouTube
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: 'nLx-ZWkzIEI',
                 playerVars: { 
                     'autoplay': 0, 'controls': 0, 'rel': 0, 'modestbranding': 1,
-                    'disablekb': 1, 'iv_load_policy': 3, 'fs': 0, 'autohide': 1
+                    'disablekb': 1, 'iv_load_policy': 3, 'fs': 0
                 },
                 events: { 'onStateChange': onPlayerStateChange }
             });
         }
 
-        // 2. Start Video
-        function initVideo() {
-            overlay.style.opacity = "0";
-            overlay.style.pointerEvents = "none";
-            
-            setTimeout(() => { 
+        // Start wideo
+        function startVSL() {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
                 controls.style.opacity = '1';
                 controls.style.pointerEvents = 'auto';
                 player.playVideo();
-            }, 600);
+            }, 800);
         }
 
-        // 3. Play/Pause Logic
-        function togglePlayPause() {
+        // Pauza/Play
+        function toggleVSL() {
             const state = player.getPlayerState();
             if (state === 1) player.pauseVideo();
             else player.playVideo();
         }
 
         function onPlayerStateChange(event) {
-            if (event.data === 1) { // Playing
+            if (event.data === 1) { // Gra
                 icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-            } else { // Paused
+            } else { // Pauza
                 icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3" fill="#fff" stroke="none"></polygon>';
             }
         }
 
-        // 4. Kursor Glow + Wykrywanie Tally
+        // KURSOR GLOW + INTELIGENTNE CHOWANIE
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
-            
             document.addEventListener('mousemove', (e) => {
-                // Płynny ruch
                 glow.style.left = e.clientX + 'px';
                 glow.style.top = e.clientY + 'px';
 
-                // Sprawdzanie czy kursor jest nad formularzem
+                // Wykrywanie pozycji formularza
                 const rect = tallyBox.getBoundingClientRect();
                 const isOverForm = (
                     e.clientX >= rect.left && 
@@ -248,13 +235,7 @@
                     e.clientY <= rect.bottom
                 );
 
-                if (isOverForm) {
-                    glow.style.opacity = '0';
-                    glow.style.transform = 'translate(-50%, -50%) scale(0.5)';
-                } else {
-                    glow.style.opacity = '1';
-                    glow.style.transform = 'translate(-50%, -50%) scale(1)';
-                }
+                glow.style.opacity = isOverForm ? '0' : '1';
             });
         }
     </script>
