@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>CloseFlow | High-Ticket Sales</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
     <style>
         /* --- BAZA --- */
         html {
@@ -108,7 +108,6 @@
             transition: all 0.4s ease;
             animation: emanate 3s ease-in-out infinite;
         }
-        .liquid-glass-btn:hover { transform: scale(1.03); border-color: #5da9ff; }
 
         .play-icon-bg {
             width: 42px; height: 42px; border-radius: 50%;
@@ -328,14 +327,14 @@
 
     <section class="hidden-section py-8 px-6 text-center">
         <div class="max-w-4xl mx-auto">
-            <h2 class="font-bold text-[22px] md:text-4xl text-white mb-4 tracking-tight">
+            <h2 class="serif-premium text-[26px] md:text-5xl text-white mb-4">
                 Nie każdy dostaje taką szansę.
             </h2>
-            <p class="font-medium text-white text-base md:text-2xl mb-2 leading-snug">
+            <p class="serif-premium italic text-[18px] md:text-3xl text-white mb-2 leading-tight">
                 Prawdziwy trening sprzedaży, realna zmiana życia
             </p>
-            <p class="text-zinc-300 text-sm md:text-xl mb-8 font-light">
-                oraz możliwość wejścia do świata <span class="text-[#7ab8ff] font-semibold">high-ticket</span>
+            <p class="serif-premium text-[18px] md:text-3xl text-white mb-8 leading-tight">
+                oraz możliwość wejścia do świata <span style="color: #7ab8ff;">high-ticket</span>
             </p>
             <p class="text-zinc-500 text-[9px] md:text-xs mb-8 tracking-[0.3em] font-light opacity-70 uppercase">
                 wypełnij formularz — liczba miejsc ograniczona
@@ -440,6 +439,7 @@
         const vslBox = document.getElementById('vsl-box');
         const overlay = document.getElementById('video-overlay');
 
+        // Scroll reveal
         const revealOnScroll = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -452,6 +452,7 @@
             revealOnScroll.observe(section);
         });
 
+        // Pillar animation
         const pillarObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -459,7 +460,7 @@
                     rows.forEach(row => {
                         setTimeout(() => {
                             row.classList.add('reveal-active');
-                        }, row.dataset.delay);
+                        }, parseInt(row.dataset.delay));
                     });
                 }
             });
@@ -468,6 +469,7 @@
         const pillarsTrigger = document.getElementById('pillars-trigger');
         if(pillarsTrigger) pillarObserver.observe(pillarsTrigger);
 
+        // YouTube API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -499,6 +501,7 @@
             }
         }
 
+        // Mouse glow logic
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
@@ -506,8 +509,9 @@
                 glow.style.top = e.clientY + 'px';
                 
                 const fRect = tallyBox.getBoundingClientRect();
-                const isOverForm = (e.clientX >= fRect.left && e.clientX <= fRect.right && e.clientY >= fRect.top && e.clientY <= fRect.bottom);
                 const vRect = vslBox.getBoundingClientRect();
+                
+                const isOverForm = (e.clientX >= fRect.left && e.clientX <= fRect.right && e.clientY >= fRect.top && e.clientY <= fRect.bottom);
                 const isOverVideo = (e.clientX >= vRect.left && e.clientX <= vRect.right && e.clientY >= vRect.top && e.clientY <= vRect.bottom);
                 
                 glow.style.opacity = (isOverForm || isOverVideo) ? '0' : '1';
