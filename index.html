@@ -250,13 +250,25 @@
         const tallyBox = document.getElementById('tally-box');
         const vslBox = document.getElementById('vsl-box');
         const btnText = document.getElementById('btn-text');
+        const overlay = document.getElementById('video-overlay');
+
+        // 1. Ładowanie API YouTube
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: 'nLx-ZWkzIEI',
                 playerVars: { 
-                    'autoplay': 0, 'controls': 1, 'rel': 0, 'modestbranding': 1,
-                    'iv_load_policy': 3, 'showinfo': 0
+                    'autoplay': 0, 
+                    'controls': 1, 
+                    'rel': 0, 
+                    'modestbranding': 1,
+                    'iv_load_policy': 3, 
+                    'showinfo': 0,
+                    'playsinline': 1 // Kluczowe dla odtwarzania wewnątrz strony na iPhone
                 },
                 events: { 
                     'onReady': onPlayerReady,
@@ -267,50 +279,51 @@
 
         function onPlayerReady(event) {
             isPlayerReady = true;
-            // Próba cichego "rozgrzania" odtwarzacza
+            // Ciche "rozgrzanie" odtwarzacza
             event.target.mute();
             event.target.playVideo();
+            
             setTimeout(() => {
-                event.target.pauseVideo();
-                event.target.unMute();
-                // Jeśli użytkownik już zdążył kliknąć, odpalamy teraz
-                if (playRequested) {
-                    startVSL();
+                // Jeśli użytkownik jeszcze nie kliknął "Odsłuchaj", pauzujemy i odciszamy pod spodem
+                if (!playRequested) {
+                    event.target.pauseVideo();
+                    event.target.unMute();
                 }
             }, 600);
         }
 
         function onPlayerStateChange(event) {
-            // Jeśli film zaczął grać, upewnij się, że nakładka znika
-            if (event.data == YT.PlayerState.PLAYING) {
-                const overlay = document.getElementById('video-overlay');
-                if (overlay.style.display !== 'none') {
-                    overlay.style.opacity = '0';
-                    setTimeout(() => overlay.style.display = 'none', 600);
-                }
+            // Jeśli film faktycznie zaczął grać (YT.PlayerState.PLAYING = 1)
+            if (event.data == 1) {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 600);
             }
         }
 
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
         function startVSL() {
-            if (!isPlayerReady) {
-                playRequested = true;
-                btnText.innerText = "Ładowanie...";
-                return;
+            playRequested = true;
+            
+            if (isPlayerReady && player) {
+                // Próba natychmiastowego odtworzenia
+                player.unMute();
+                player.playVideo();
+                
+                // Backupowe chowanie overlay na wypadek opóźnień API
+                overlay.style.opacity = '0';
+                setTimeout(() => { overlay.style.display = 'none'; }, 600);
+            } else {
+                // Jeśli użytkownik kliknął zanim API się załadowało
+                btnText.innerText = "Inicjalizacja...";
+                let checkReady = setInterval(() => {
+                    if (isPlayerReady) {
+                        player.unMute();
+                        player.playVideo();
+                        clearInterval(checkReady);
+                    }
+                }, 200);
             }
-
-            const overlay = document.getElementById('video-overlay');
-            overlay.style.opacity = '0';
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                if (player && player.playVideo) {
-                    player.playVideo();
-                }
-            }, 600);
         }
 
         // Kursor glow (tylko desktop)
