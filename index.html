@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>CloseFlow | High-Ticket Sales</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* RESET & ANTI-SCROLL */
         html, body { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
@@ -16,30 +14,25 @@
         body::-webkit-scrollbar { display: none; }
         * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
 
-        /* KURSOR GLOW (DESKTOP) */
+        /* KURSOR: SYSTEMOWY + GLOW */
         @media (pointer: fine) {
             #cursor-glow {
-                width: 55px; height: 55px;
-                background: radial-gradient(circle, rgba(255, 140, 0, 0.25) 0%, transparent 70%);
-                border: 1px solid rgba(255, 140, 0, 0.3);
+                width: 60px; height: 60px;
+                background: radial-gradient(circle, rgba(255, 140, 0, 0.2) 0%, transparent 70%);
+                border: 1px solid rgba(255, 140, 0, 0.2);
                 border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999;
-                transform: translate(-50%, -50%); 
-                transition: transform 0.1s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+                transform: translate(-50%, -50%); transition: transform 0.1s linear;
             }
         }
-        @media (pointer: coarse) { #cursor-glow { display: none !important; } }
 
-        /* TYPOGRAFIA */
         .serif { font-family: 'Playfair Display', serif; }
         .brand-logo { color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
-        /* SEKCJE */
         .vsl-section {
             background: linear-gradient(to bottom, #0d0d0d 0%, #0d0d0d 85%, #000 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
 
-        /* PULSUJĄCA PIGUŁKA */
         .pill-status {
             border: 1px solid rgba(255, 140, 0, 0.4); background: rgba(255, 140, 0, 0.05);
             color: #ff8c00; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em;
@@ -47,65 +40,59 @@
             animation: pulse-glow-border 2s infinite ease-in-out;
         }
         @keyframes pulse-glow-border {
-            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.2); border-color: rgba(255, 140, 0, 0.3); }
-            50% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.5); border-color: rgba(255, 140, 0, 0.6); }
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.4); }
         }
 
-        /* LIQUID GLASS WIDEO SYSTEM */
-        .video-wrapper {
-            max-width: 900px; margin: 0 auto;
+        /* VSL CONTAINER SYSTEM */
+        .vsl-container {
+            max-width: 900px; margin: 0 auto; position: relative;
             border-radius: 1.5rem; overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            background: #000; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-            position: relative; padding-bottom: 56.25%; height: 0;
+            background: #000; border: 1px solid rgba(255,255,255,0.05);
+            aspect-ratio: 16/9; box-shadow: 0 30px 100px rgba(0,0,0,0.9);
         }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-        .video-wrapper.interactive iframe { pointer-events: auto; }
-        
-        /* OVERLAY BLUR Z WIDEO */
-        #video-blur-overlay {
-            position: absolute; inset: 0;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            background: rgba(0, 0, 0, 0.3); z-index: 20;
+
+        #yt-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; }
+
+        /* LIQUID GLASS OVERLAY */
+        #video-overlay {
+            position: absolute; inset: 0; z-index: 20;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.4);
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.6s ease, backdrop-filter 0.6s ease;
+            transition: all 0.5s ease;
         }
 
-        /* PRZYCISK ODSŁUCHAJ (GLASS PILL) */
         .glass-pill {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 140, 0, 0.4); border-radius: 50px;
-            padding: 12px 30px; color: #fff; font-weight: 600; font-size: 15px;
-            display: flex; align-items: center; gap: 12px;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        .glass-pill:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 140, 0, 0.7); transform: scale(1.05); }
-
-        /* PRZYCISK PLAY/PAUSE (GLASS CIRCLE) */
-        .glass-circle {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 140, 0, 0.3); border-radius: 50%;
-            width: 75px; height: 75px; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s ease; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 15; opacity: 0; pointer-events: none; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 140, 0, 0.5); border-radius: 100px;
+            padding: 14px 32px; color: #fff; font-weight: 600;
+            display: flex; align-items: center; gap: 10px; cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .video-wrapper.interactive:hover .glass-circle.active,
-        .glass-circle.force-show { opacity: 1; pointer-events: auto; }
-        .glass-circle:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 140, 0, 0.6); transform: translate(-50%, -50%) scale(1.05); }
+        .glass-pill:hover { transform: scale(1.05); background: rgba(255,255,255,0.08); }
 
-        /* CTA */
+        /* PLAY/PAUSE MINI GLASS */
+        #mini-controls {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 15; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .glass-circle {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 140, 0, 0.3);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+
         .cta-premium {
             background: #ff8c00; color: #fff; padding: 20px 52px; border-radius: 100px;
             font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px;
-            box-shadow: 0 10px 40px rgba(255, 140, 0, 0.2); transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); display: inline-block;
+            box-shadow: 0 10px 40px rgba(255, 140, 0, 0.2); transition: all 0.4s ease; display: inline-block;
         }
         .cta-premium:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(255, 140, 0, 0.4); }
 
-        /* TALLY */
-        .form-frame { max-width: 520px; margin: 0 auto; height: 565px; overflow: hidden; background: #000; border-radius: 32px; position: relative; }
-        .form-frame iframe { position: absolute; top: -5px; left: 0; width: 100%; height: 650px; border: none; }
+        .form-frame { max-width: 520px; margin: 0 auto; height: 565px; overflow: hidden; border-radius: 32px; background: #000; }
     </style>
 </head>
 <body>
@@ -123,29 +110,21 @@
                     <div class="pill-status">• Złóż aplikację — liczba miejsc ograniczona •</div>
                 </div>
                 
-                <div id="video-container" class="video-wrapper">
-                    <div id="yt-player"></div>
-                    
-                    <div id="video-blur-overlay">
-                        <button id="btn-odsłuchaj" class="glass-pill">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                            </svg>
+                <div class="vsl-container" id="vsl-box">
+                    <div id="video-overlay">
+                        <button class="glass-pill" onclick="startVideo()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
                             Odsłuchaj
                         </button>
                     </div>
 
-                    <button id="btn-play-pause" class="glass-circle">
-                        <svg id="icon-pause" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="6" y="4" width="4" height="16"></rect>
-                            <rect x="14" y="4" width="4" height="16"></rect>
-                        </svg>
-                        <svg id="icon-play" class="hidden" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;">
-                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                        </svg>
-                    </button>
+                    <div id="yt-player"></div>
+
+                    <div id="mini-controls">
+                        <div class="glass-circle" onclick="togglePlay()">
+                            <svg id="p-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff8c00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -158,103 +137,55 @@
                 <span class="italic font-light opacity-80 text-zinc-300">prawdziwego szkolenia</span> — i dołączenie do <br>
                 <span class="text-[#ff8c00]">High-Ticket Offer</span>
             </h2>
-            <p class="text-zinc-500 text-base mb-20 tracking-wide max-w-2xl mx-auto font-light leading-relaxed">
-                Dostęp jest ograniczony. Nie każda osoba, która wyśle aplikację, zostanie zakwalifikowana do naszego zamkniętego networku.
-            </p>
             <a href="#aplikuj" class="cta-premium">Złóż aplikację teraz →</a>
         </div>
     </section>
 
     <section id="aplikuj" class="py-32 px-6 bg-black border-t border-white/5">
-        <div class="form-frame shadow-2xl shadow-orange-500/5">
-            <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" allowtransparency="true"></iframe>
+        <div class="form-frame">
+            <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" width="100%" height="650" frameborder="0"></iframe>
         </div>
     </section>
 
-    <footer class="py-12 text-center bg-black border-t border-white/5">
-        <p class="text-zinc-800 text-[10px] tracking-widest uppercase">© 2026 CloseFlow. Wszystkie prawa zastrzeżone.</p>
-    </footer>
-
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // YOUTUBE API LOGIC
-        var player;
+        let player;
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: 'nLx-ZWkzIEI',
-                playerVars: {
-                    'autoplay': 0, 'controls': 1, 'rel': 0, 'modestbranding': 1, 'showinfo': 0
-                },
-                events: {
-                    'onStateChange': onPlayerStateChange
-                }
+                playerVars: { 'autoplay': 0, 'controls': 0, 'rel': 0, 'modestbranding': 1 },
+                events: { 'onStateChange': onPlayerStateChange }
             });
         }
 
-        const videoContainer = document.getElementById('video-container');
-        const blurOverlay = document.getElementById('video-blur-overlay');
-        const btnOdsłuchaj = document.getElementById('btn-odsłuchaj');
-        const btnPlayPause = document.getElementById('btn-play-pause');
-        const iconPlay = document.getElementById('icon-play');
-        const iconPause = document.getElementById('icon-pause');
-
-        // LOGIKA CLICK -> UNBLUR -> ODTWARZANIE
-        btnOdsłuchaj.addEventListener('click', () => {
-            blurOverlay.style.opacity = '0';
-            setTimeout(() => {
-                blurOverlay.style.display = 'none';
-                videoContainer.classList.add('interactive'); // Odblokowuje interakcję z iframem
-            }, 600);
-            
+        function startVideo() {
+            document.getElementById('video-overlay').style.opacity = '0';
+            setTimeout(() => { document.getElementById('video-overlay').style.display = 'none'; }, 500);
             player.playVideo();
-            btnPlayPause.classList.add('active');
-        });
+            document.getElementById('mini-controls').style.opacity = '1';
+        }
 
-        // LOGIKA ŚRODKOWEGO PRZYCISKU PLAY/PAUSE
-        btnPlayPause.addEventListener('click', () => {
-            if (player && player.getPlayerState) {
-                const state = player.getPlayerState();
-                if (state === YT.PlayerState.PLAYING) {
-                    player.pauseVideo();
-                } else {
-                    player.playVideo();
-                }
-            }
-        });
+        function togglePlay() {
+            const state = player.getPlayerState();
+            if (state === 1) player.pauseVideo();
+            else player.playVideo();
+        }
 
-        // NASŁUCHIWANIE ZMIAN Z YOUTUBE
         function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                iconPlay.classList.add('hidden');
-                iconPause.classList.remove('hidden');
-                btnPlayPause.classList.remove('force-show');
-            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                iconPause.classList.add('hidden');
-                iconPlay.classList.remove('hidden');
-                btnPlayPause.classList.add('force-show');
+            const icon = document.getElementById('p-icon');
+            if (event.data === 1) { // Playing
+                icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+            } else { // Paused
+                icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
             }
         }
 
-        // KURSOR GLOW LOGIC
+        // CURSOR
         const glow = document.getElementById('cursor-glow');
-        if (window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener('mousemove', (e) => {
-                glow.style.left = e.clientX + 'px';
-                glow.style.top = e.clientY + 'px';
-                
-                const form = document.querySelector('.form-frame');
-                if(form) {
-                    const rect = form.getBoundingClientRect();
-                    if (e.clientX >= rect.left && e.clientX <= rect.right &&
-                        e.clientY >= rect.top && e.clientY <= rect.bottom) {
-                        glow.style.opacity = '0';
-                    } else {
-                        glow.style.opacity = '1';
-                    }
-                }
-            });
-            document.addEventListener('mousedown', () => glow.style.transform = 'translate(-50%, -50%) scale(0.8)');
-            document.addEventListener('mouseup', () => glow.style.transform = 'translate(-50%, -50%) scale(1)');
-        }
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
     </script>
 </body>
 </html>
