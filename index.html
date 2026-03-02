@@ -27,18 +27,17 @@
         body::-webkit-scrollbar { display: none; }
         * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
 
-        /* --- NOWE: ANIMACJA POJAWIANIA SIĘ --- */
+        /* --- ANIMACJA POJAWIANIA SIĘ (Scroll Reveal) --- */
         .hidden-section {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-            pointer-events: none; /* Blokuje interakcję dopóki niewidoczne */
+            transform: translateY(60px);
+            transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
+        /* Ta klasa będzie nadawana przez JS gdy sekcja wejdzie w pole widzenia */
         .section-visible {
             opacity: 1 !important;
             transform: translateY(0) !important;
-            pointer-events: auto !important;
         }
 
         /* --- KURSOR GLOW --- */
@@ -220,7 +219,7 @@
         </section>
     </div>
 
-    <section class="hidden-section py-24 px-6 text-center reveal-trigger">
+    <section class="hidden-section py-24 px-6 text-center">
         <div class="max-w-5xl mx-auto">
             <h2 class="serif-premium text-5xl md:text-7xl mb-8 text-white">
                 Nie każdy dostaje taką szansę. <br>
@@ -234,7 +233,7 @@
         </div>
     </section>
 
-    <section class="hidden-section py-20 px-6 text-center reveal-trigger">
+    <section class="hidden-section py-20 px-6 text-center">
         <div class="description-premium">
             <h3 class="desc-title">CloseFlow</h3>
             <div class="desc-content">
@@ -245,13 +244,13 @@
         </div>
     </section>
 
-    <section id="aplikuj" class="hidden-section py-32 px-6 border-t border-white/5 reveal-trigger">
+    <section id="aplikuj" class="hidden-section py-32 px-6 border-t border-white/5">
         <div class="form-frame-wrapper" id="tally-box">
             <iframe src="https://tally.so/r/Xxe8jV?hideTitle=1&transparentBackground=1" width="100%" height="650" frameborder="0"></iframe>
         </div>
     </section>
 
-    <footer class="hidden-section py-20 text-center border-t border-white/5 opacity-40 reveal-trigger">
+    <footer class="hidden-section py-20 text-center border-t border-white/5 opacity-40">
         <p class="text-[10px] tracking-[0.5em] uppercase">© 2026 CloseFlow</p>
     </footer>
 
@@ -259,7 +258,6 @@
         let player;
         let isPlayerReady = false;
         let playRequested = false;
-        let contentRevealed = false;
 
         const glow = document.getElementById('cursor-glow');
         const tallyBox = document.getElementById('tally-box');
@@ -267,18 +265,24 @@
         const btnText = document.getElementById('btn-text');
         const overlay = document.getElementById('video-overlay');
 
-        // FUNKCJA POJAWIANIA TREŚCI
-        function revealContent() {
-            if (contentRevealed) return;
-            contentRevealed = true;
-            
-            const sections = document.querySelectorAll('.hidden-section');
-            sections.forEach((section, index) => {
-                setTimeout(() => {
-                    section.classList.add('section-visible');
-                }, index * 150); // Delikatny staggering (opóźnienie między sekcjami)
+        // --- NOWA LOGIKA SCROLL REVEAL ---
+        const revealOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('section-visible');
+                    // Opcjonalnie: przestań obserwować po pokazaniu
+                    // revealOnScroll.unobserve(entry.target);
+                }
             });
-        }
+        }, {
+            threshold: 0.15, // Sekcja musi być widoczna w 15%, aby się ujawniła
+            rootMargin: "0px 0px -50px 0px" // Trochę marginesu od dołu dla lepszego efektu
+        });
+
+        // Aktywacja obserwatora dla wszystkich ukrytych sekcji
+        document.querySelectorAll('.hidden-section').forEach(section => {
+            revealOnScroll.observe(section);
+        });
 
         // 1. Ładowanie API YouTube
         var tag = document.createElement('script');
@@ -324,14 +328,11 @@
                 setTimeout(() => {
                     overlay.style.display = 'none';
                 }, 600);
-                revealContent(); // Pojawienie treści po uruchomieniu wideo
             }
         }
 
         function startVSL() {
             playRequested = true;
-            revealContent(); // Pojawienie treści natychmiast po kliknięciu
-            
             if (isPlayerReady && player) {
                 player.unMute();
                 player.playVideo();
@@ -348,23 +349,6 @@
                 }, 200);
             }
         }
-
-        // REVEAL PRZY SCROLLOWANIU (Intersection Observer)
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    revealContent();
-                }
-            });
-        }, observerOptions);
-
-        // Obserwujemy pierwszą ukrytą sekcję, by odpalić reveal przy scrollu
-        const firstTrigger = document.querySelector('.reveal-trigger');
-        if (firstTrigger) observer.observe(firstTrigger);
 
         // Kursor glow (tylko desktop)
         if (window.matchMedia("(pointer: fine)").matches) {
