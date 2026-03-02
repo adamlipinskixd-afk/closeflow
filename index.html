@@ -7,10 +7,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
     <style>
-        /* --- BAZA Z GRADIENTEM NA CAŁOŚĆ --- */
-        html, body { 
-            background: linear-gradient(180deg, #00172D 0%, #000b16 20%, #000000 50%, #000000 100%);
-            background-attachment: fixed; /* Gradient zostaje w tle podczas przewijania */
+        /* --- BAZA (Naprawiony Gradient pod Mobile) --- */
+        html {
+            background-color: #000;
+            overscroll-behavior: none; /* Blokuje białe odbicie na górze/dole */
+        }
+        body { 
+            /* Gradient jako tło całego dokumentu, bez 'fixed' dla lepszej stabilności mobile */
+            background: linear-gradient(180deg, #00172D 0%, #000b16 15%, #000000 40%, #000000 100%);
+            background-repeat: no-repeat;
+            background-size: cover;
             color: #fff; font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
         }
@@ -36,9 +42,7 @@
         .brand-logo { color: #5da9ff; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
         /* --- VSL SECTION --- */
-        .vsl-section {
-            padding-bottom: 40px;
-        }
+        .vsl-section { padding-bottom: 40px; }
 
         /* --- PILL EMANUJĄCY --- */
         .pill-status {
