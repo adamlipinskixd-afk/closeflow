@@ -15,11 +15,10 @@
         body::-webkit-scrollbar { display: none; }
         * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
 
-        /* --- KURSOR GLOW (Granatowy) --- */
+        /* --- KURSOR GLOW (Tylko poświata, bez obramowania) --- */
         #cursor-glow {
-            width: 65px; height: 65px;
-            background: radial-gradient(circle, rgba(0, 33, 71, 0.4) 0%, transparent 75%);
-            border: 1px solid rgba(0, 33, 71, 0.5);
+            width: 80px; height: 80px;
+            background: radial-gradient(circle, rgba(0, 71, 171, 0.25) 0%, transparent 70%);
             border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000;
             transform: translate(-50%, -50%); transition: opacity 0.3s ease;
             display: none;
@@ -31,43 +30,42 @@
             letter-spacing: -0.01em;
             line-height: 1.1;
         }
-        .brand-logo { color: #0047ab; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
+        .brand-logo { color: #5da9ff; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
-        /* --- VSL SECTION --- */
+        /* --- VSL SECTION (Płynne przejście tła) --- */
         .vsl-section {
-            background: radial-gradient(circle at top, #00172D 0%, #000 100%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            background: linear-gradient(180deg, #00172D 0%, #000b16 60%, #000000 100%);
             padding-bottom: 100px;
         }
 
-        /* --- PULSUJĄCY PILL --- */
+        /* --- PILL EMANUJĄCY KOLOREM --- */
         .pill-status {
-            border: 1px solid rgba(0, 71, 171, 0.4); 
-            background: rgba(0, 71, 171, 0.05);
-            color: #4da6ff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em;
+            border: 1px solid rgba(93, 169, 255, 0.3); 
+            background: rgba(0, 33, 71, 0.4);
+            color: #99ccff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em;
             padding: 14px 32px; border-radius: 50px; display: inline-flex; align-items: center;
-            animation: pulse-border 2s infinite;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 71, 171, 0.2);
+            animation: emanate 3s ease-in-out infinite;
         }
 
-        @keyframes pulse-border {
-            0% { box-shadow: 0 0 0 0 rgba(0, 71, 171, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(0, 71, 171, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 71, 171, 0); }
+        @keyframes emanate {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 71, 171, 0.2); border-color: rgba(93, 169, 255, 0.2); }
+            50% { box-shadow: 0 0 25px rgba(0, 71, 171, 0.5); border-color: rgba(93, 169, 255, 0.6); }
         }
 
-        /* --- VSL CONTAINER Z PULSOWANIEM (Granat) --- */
+        /* --- VSL CONTAINER (Granatowy blask) --- */
         .vsl-container {
             max-width: 960px; margin: 0 auto; position: relative;
             border-radius: 2.5rem; overflow: hidden;
             background: #000; border: 1px solid rgba(255,255,255,0.08);
             aspect-ratio: 16/9; 
-            box-shadow: 0 0 40px rgba(0, 33, 71, 0.2);
-            animation: vsl-glow 4s infinite alternate;
+            animation: vsl-glow 5s infinite alternate;
         }
 
         @keyframes vsl-glow {
-            0% { box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 20px rgba(0, 33, 71, 0.1); }
-            100% { box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 50px rgba(0, 33, 71, 0.3); }
+            0% { box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 20px rgba(0, 71, 171, 0.1); }
+            100% { box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 60px rgba(0, 71, 171, 0.3); }
         }
 
         #yt-player { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
@@ -75,41 +73,42 @@
         /* --- OVERLAY --- */
         #video-overlay {
             position: absolute; inset: 0; z-index: 10;
-            backdrop-filter: blur(45px) saturate(160%); -webkit-backdrop-filter: blur(45px) saturate(160%);
-            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
+            background: rgba(0,0,0,0.6);
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.8s ease;
         }
 
         .liquid-glass-btn {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 100px;
             padding: 20px 45px; color: #fff; font-weight: 500; font-size: 17px;
             display: flex; align-items: center; gap: 15px; cursor: pointer;
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
             transition: all 0.4s ease;
         }
-        .liquid-glass-btn:hover { transform: scale(1.05); border-color: #0047ab; }
+        .liquid-glass-btn:hover { transform: scale(1.03); border-color: #5da9ff; }
 
         .play-icon-bg {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: #003366; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            width: 42px; height: 42px; border-radius: 50%;
+            background: #002b5c; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
-        /* --- CTA (Luksusowy Granat) --- */
+        /* --- CTA --- */
         .cta-premium {
-            background: #002147; color: #fff; padding: 22px 60px; border-radius: 100px;
+            background: #002b5c; color: #fff; padding: 22px 60px; border-radius: 100px;
             font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px;
             display: inline-block; transition: 0.4s; text-decoration: none;
-            box-shadow: 0 15px 40px rgba(0, 33, 71, 0.4);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 15px 40px rgba(0, 20, 40, 0.8);
+            border: 1px solid rgba(93, 169, 255, 0.2);
         }
         .cta-premium:hover { 
             transform: translateY(-5px); 
-            background: #003366;
-            box-shadow: 0 25px 50px rgba(0, 33, 71, 0.6); 
+            background: #003d82;
+            box-shadow: 0 25px 50px rgba(0, 33, 71, 0.7); 
+            border-color: rgba(93, 169, 255, 0.4);
         }
 
         .form-frame-wrapper {
@@ -125,7 +124,7 @@
 
     <div class="vsl-section">
         <nav class="pt-16 pb-12 text-center">
-            <h1 class="brand-logo" style="color: #0056b3;">CloseFlow</h1>
+            <h1 class="brand-logo">CloseFlow</h1>
         </nav>
 
         <section class="px-6">
@@ -153,8 +152,8 @@
         <div class="max-w-5xl mx-auto">
             <h2 class="serif-premium text-5xl md:text-7xl mb-8 text-white">
                 Nie każdy dostaje taką szansę. <br>
-                <span class="italic font-medium text-zinc-200">Prawdziwy trening sprzedaży, realna zmiana życia</span> <br>
-                oraz możliwość wejścia do świata <span style="color: #4da6ff;">high-ticket</span>
+                <span class="italic font-medium text-zinc-300">Prawdziwy trening sprzedaży, realna zmiana życia</span> <br>
+                oraz możliwość wejścia do świata <span style="color: #7ab8ff;">high-ticket</span>
             </h2>
             <p class="text-zinc-500 text-lg mb-20 tracking-widest font-light opacity-80 uppercase">
                 wypełnij formularz — liczba miejsc jest ograniczona
