@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>CloseFlow | High-Ticket Sales</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
     <style>
         /* --- BAZA --- */
         html, body { 
@@ -24,11 +24,12 @@
             display: none;
         }
 
-        /* --- TYPOGRAFIA --- */
+        /* --- TYPOGRAFIA (Zasada 1: Font z 1 zdjęcia) --- */
         .serif-premium { 
             font-family: 'Cormorant Garamond', serif; 
-            letter-spacing: -0.01em;
-            line-height: 1.1;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+            font-weight: 600;
         }
         .brand-logo { color: #5da9ff; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
@@ -109,15 +110,14 @@
             border-color: rgba(93, 169, 255, 0.4);
         }
 
-        /* --- NOWA SEKCJA Z PASKAMI (The Closer Network Style) --- */
+        /* --- SEKCJA OPISOWA (Zasada 2: Font z 2 zdjęcia) --- */
         .description-premium {
             position: relative;
             max-width: 850px;
             margin: 0 auto;
-            padding: 60px 20px;
+            padding: 80px 20px;
         }
 
-        /* Górna i dolna linia gradientowa */
         .description-premium::before,
         .description-premium::after {
             content: "";
@@ -125,9 +125,9 @@
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(93, 169, 255, 0.4) 50%, transparent 100%);
+            background: linear-gradient(90deg, transparent 0%, rgba(93, 169, 255, 0.3) 50%, transparent 100%);
         }
 
         .description-premium::before { top: 0; }
@@ -137,22 +137,28 @@
             color: #5da9ff;
             font-family: 'Cormorant Garamond', serif;
             font-size: 2.2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             font-weight: 500;
+            font-style: italic;
         }
 
+        /* Font Inter (Thin/Light) jak na drugim zdjęciu */
         .desc-content {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.1rem;
-            line-height: 1.8;
-            font-weight: 300;
+            color: rgba(255, 255, 255, 0.55);
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            line-height: 2;
+            font-weight: 200;
+            letter-spacing: 0.01em;
         }
 
         .desc-highlight {
             color: #fff;
             font-weight: 600;
             display: block;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15rem;
         }
 
         .form-frame-wrapper {
