@@ -34,14 +34,21 @@
             transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Specyficzne animacje wsuwania dla ikon */
-        .reveal-left { transform: translateX(-100px); opacity: 0; transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
-        .reveal-right { transform: translateX(100px); opacity: 0; transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+        /* Nowy efekt Shuffle dla ikon - pojawianie się w miejscu */
+        .reveal-shuffle {
+            opacity: 0;
+            transform: scale(0.8) translateY(10px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
         
         .section-visible {
             opacity: 1 !important;
             transform: translateY(0) !important;
-            transform: translateX(0) !important;
+        }
+
+        .section-visible .reveal-shuffle {
+            opacity: 1;
+            transform: scale(1) translateY(0);
         }
 
         /* --- KURSOR GLOW --- */
@@ -186,39 +193,76 @@
             font-size: 1.15rem;
         }
 
-        /* --- NOWE STYLE DLA SEKCJI GAIN (ZMODYFIKOWANE) --- */
+        /* --- SEKCJA GAIN (FILARY) --- */
+        .pillars-container {
+            position: relative;
+        }
+
+        /* Linia łącząca kafelki - jeden ciągły element */
+        .pillar-main-line {
+            position: absolute;
+            left: 25px; /* Środek icon-box */
+            top: 25px;  /* Od środka pierwszej ikony */
+            bottom: 25px; /* Do środka ostatniej ikony */
+            width: 1px;
+            background: linear-gradient(to bottom, 
+                #ff6b00 0%, 
+                rgba(255, 107, 0, 0.4) 50%, 
+                #ff6b00 100%
+            );
+            opacity: 0.4;
+            z-index: 1;
+        }
+
         .pillar-row {
             display: flex;
             align-items: flex-start;
             gap: 2rem;
             position: relative;
-            padding-bottom: 3rem;
-        }
-        
-        /* Pomarańczowa linia łącząca */
-        .pillar-row:not(:last-child)::after {
-            content: "";
-            position: absolute;
-            left: 25px; /* Połowa szerokości icon-box */
-            top: 50px;
-            bottom: 0;
-            width: 1px;
-            background: linear-gradient(to bottom, #ff6b00, transparent);
-            opacity: 0.3;
+            padding-bottom: 3.5rem;
+            z-index: 2;
         }
 
+        /* Ikony z efektem LIQUID GLASS */
         .icon-box {
             width: 50px;
             height: 50px;
             min-width: 50px;
-            background: rgba(255, 107, 0, 0.05);
-            border: 1px solid rgba(255, 107, 0, 0.2);
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(255, 107, 0, 0.02) 100%);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 107, 0, 0.25);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2;
-            box-shadow: 0 0 20px rgba(255, 107, 0, 0.05);
+            position: relative;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        /* Błysk Liquid Glass na hover */
+        .icon-box::before {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: 0.6s;
+        }
+
+        .icon-box:hover {
+            transform: scale(1.1) translateY(-5px);
+            border-color: rgba(255, 107, 0, 0.6);
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.25) 0%, rgba(255, 107, 0, 0.05) 100%);
+            box-shadow: 0 15px 45px rgba(255, 107, 0, 0.2);
+        }
+
+        .icon-box:hover::before {
+            left: 100%;
         }
 
         .pillar-content {
@@ -227,18 +271,18 @@
 
         .pillar-number {
             font-size: 10px;
-            color: rgba(255, 107, 0, 0.5);
+            color: rgba(255, 107, 0, 0.6);
             font-weight: 700;
             margin-right: 8px;
         }
 
+        /* --- TALLY & FINAL CTA --- */
         .form-frame-wrapper {
             max-width: 560px; margin: 0 auto; height: 600px; border-radius: 40px;
             background: #000; border: 1px solid rgba(255,255,255,0.05);
             overflow: hidden; position: relative;
         }
 
-        /* --- FINAL CTA SECTION --- */
         .final-cta-btn {
             background: linear-gradient(135deg, #002b5c 0%, #0047ab 100%);
             color: #fff;
@@ -327,9 +371,11 @@
                 <p class="text-zinc-500 uppercase tracking-widest text-xs">Cztery filary zarezerwowane dla członków sieci</p>
             </div>
 
-            <div class="space-y-4">
-                <div class="pillar-row hidden-section">
-                    <div class="icon-box">
+            <div class="pillars-container">
+                <div class="pillar-main-line"></div>
+
+                <div class="pillar-row hidden-section" style="transition-delay: 0.1s;">
+                    <div class="icon-box reveal-shuffle">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                     </div>
                     <div class="pillar-content">
@@ -338,8 +384,8 @@
                     </div>
                 </div>
 
-                <div class="pillar-row hidden-section">
-                    <div class="icon-box">
+                <div class="pillar-row hidden-section" style="transition-delay: 0.3s;">
+                    <div class="icon-box reveal-shuffle">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                     </div>
                     <div class="pillar-content">
@@ -348,8 +394,8 @@
                     </div>
                 </div>
 
-                <div class="pillar-row hidden-section">
-                    <div class="icon-box">
+                <div class="pillar-row hidden-section" style="transition-delay: 0.5s;">
+                    <div class="icon-box reveal-shuffle">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
                     </div>
                     <div class="pillar-content">
@@ -358,8 +404,8 @@
                     </div>
                 </div>
 
-                <div class="pillar-row hidden-section">
-                    <div class="icon-box">
+                <div class="pillar-row hidden-section" style="transition-delay: 0.7s;">
+                    <div class="icon-box reveal-shuffle">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     </div>
                     <div class="pillar-content">
@@ -397,7 +443,6 @@
     <script>
         let player;
         let isPlayerReady = false;
-        let playRequested = false;
 
         const glow = document.getElementById('cursor-glow');
         const tallyBox = document.getElementById('tally-box');
@@ -405,6 +450,7 @@
         const btnText = document.getElementById('btn-text');
         const overlay = document.getElementById('video-overlay');
 
+        // Obsługa Intersection Observer dla sekcji i ikon
         const revealOnScroll = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -420,6 +466,7 @@
             revealOnScroll.observe(section);
         });
 
+        // YouTube API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -438,29 +485,18 @@
                     'playsinline': 1 
                 },
                 events: { 
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
+                    'onReady': (e) => { isPlayerReady = true; e.target.mute(); },
+                    'onStateChange': (e) => {
+                        if (e.data == 1) { 
+                            overlay.style.opacity = '0';
+                            setTimeout(() => { overlay.style.display = 'none'; }, 600);
+                        }
+                    }
                 }
             });
         }
 
-        function onPlayerReady(event) {
-            isPlayerReady = true;
-            event.target.mute();
-            event.target.pauseVideo();
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data == 1) { 
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 600);
-            }
-        }
-
         function startVSL() {
-            playRequested = true;
             if (isPlayerReady && player) {
                 player.unMute();
                 player.playVideo();
@@ -476,15 +512,18 @@
             }
         }
 
+        // Kursor Glow
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
                 glow.style.left = e.clientX + 'px';
                 glow.style.top = e.clientY + 'px';
+                
                 const fRect = tallyBox.getBoundingClientRect();
                 const isOverForm = (e.clientX >= fRect.left && e.clientX <= fRect.right && e.clientY >= fRect.top && e.clientY <= fRect.bottom);
                 const vRect = vslBox.getBoundingClientRect();
                 const isOverVideo = (e.clientX >= vRect.left && e.clientX <= vRect.right && e.clientY >= vRect.top && e.clientY <= vRect.bottom);
+                
                 glow.style.opacity = (isOverForm || isOverVideo) ? '0' : '1';
             });
         }
