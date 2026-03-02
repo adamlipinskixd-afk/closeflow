@@ -33,22 +33,10 @@
             transform: translateY(60px);
             transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1), transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
-
-        /* Nowy efekt Shuffle dla ikon - pojawianie się w miejscu */
-        .reveal-shuffle {
-            opacity: 0;
-            transform: scale(0.8) translateY(10px);
-            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
         
         .section-visible {
             opacity: 1 !important;
             transform: translateY(0) !important;
-        }
-
-        .section-visible .reveal-shuffle {
-            opacity: 1;
-            transform: scale(1) translateY(0);
         }
 
         /* --- KURSOR GLOW --- */
@@ -198,12 +186,12 @@
             position: relative;
         }
 
-        /* Linia łącząca kafelki - skrócona, by nie wystawała poza ostatnią ikonę */
+        /* Linia: poprawiona, kończy się na środku ostatniej ikony */
         .pillar-main-line {
             position: absolute;
             left: 25px; 
-            top: 25px;  
-            bottom: 60px; /* Zmienione z 25px na 60px, aby kończyła się na środku ostatniej ikony */
+            top: 25px; 
+            bottom: 40px; 
             width: 1px;
             background: linear-gradient(to bottom, 
                 rgba(93, 169, 255, 0.8) 0%, 
@@ -221,9 +209,18 @@
             position: relative;
             padding-bottom: 3.5rem;
             z-index: 2;
+            /* Ukrywamy domyślnie dla efektu shuffle */
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* Ikony z efektem LIQUID GLASS - Poprawiona poświata i wypełnienie */
+        /* Klasa aktywująca shuffle reveal */
+        .pillar-row.reveal-active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
         .icon-box {
             width: 50px;
             height: 50px;
@@ -243,7 +240,6 @@
             overflow: hidden;
         }
 
-        /* Błysk Liquid Glass na hover */
         .icon-box::before {
             content: "";
             position: absolute;
@@ -258,16 +254,11 @@
             transform: scale(1.1) translateY(-5px);
             border-color: rgba(93, 169, 255, 0.5);
             background: linear-gradient(135deg, rgba(93, 169, 255, 0.15) 0%, rgba(93, 169, 255, 0.08) 100%);
-            box-shadow: inset 0 0 15px rgba(93, 169, 255, 0.1), 0 15px 45px rgba(0, 0, 0, 0.5);
         }
 
-        .icon-box:hover::before {
-            left: 100%;
-        }
+        .icon-box:hover::before { left: 100%; }
 
-        .pillar-content {
-            padding-top: 0.5rem;
-        }
+        .pillar-content { padding-top: 0.5rem; }
 
         .pillar-number {
             font-size: 10px;
@@ -304,7 +295,6 @@
         .final-cta-btn:hover {
             transform: translateY(-5px) scale(1.02);
             border-color: #5da9ff;
-            box-shadow: 0 25px 60px rgba(0, 71, 171, 0.3);
             background: linear-gradient(135deg, #003673 0%, #0056cc 100%);
         }
     </style>
@@ -371,45 +361,45 @@
                 <p class="text-zinc-500 uppercase tracking-widest text-xs">Cztery filary zarezerwowane dla członków sieci</p>
             </div>
 
-            <div class="pillars-container">
+            <div class="pillars-container" id="pillars-trigger">
                 <div class="pillar-main-line"></div>
 
-                <div class="pillar-row hidden-section" style="transition-delay: 0.1s;">
-                    <div class="icon-box reveal-shuffle">
+                <div class="pillar-row" data-delay="100">
+                    <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                     </div>
                     <div class="pillar-content">
-                        <h4 class="text-lg font-medium mb-1"><span class="pillar-number">01</span> Offer Placement</h4>
+                        <h4 class="text-lg font-medium mb-1 text-white"><span class="pillar-number">01</span> Offer Placement</h4>
                         <p class="text-zinc-500 text-sm leading-relaxed max-w-md">Dostęp do zweryfikowanych ofert z realnym popytem — bez cold callingu i zgadywania.</p>
                     </div>
                 </div>
 
-                <div class="pillar-row hidden-section" style="transition-delay: 0.3s;">
-                    <div class="icon-box reveal-shuffle">
+                <div class="pillar-row" data-delay="300">
+                    <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                     </div>
                     <div class="pillar-content">
-                        <h4 class="text-lg font-medium mb-1"><span class="pillar-number">02</span> Elite Closing Skillset</h4>
+                        <h4 class="text-lg font-medium mb-1 text-white"><span class="pillar-number">02</span> Elite Closing Skillset</h4>
                         <p class="text-zinc-500 text-sm leading-relaxed max-w-md">Rozwijaj fundamenty zamykania, które generują stałe, wysokie prowizje.</p>
                     </div>
                 </div>
 
-                <div class="pillar-row hidden-section" style="transition-delay: 0.5s;">
-                    <div class="icon-box reveal-shuffle">
+                <div class="pillar-row" data-delay="500">
+                    <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
                     </div>
                     <div class="pillar-content">
-                        <h4 class="text-lg font-medium mb-1"><span class="pillar-number">03</span> Income Potential</h4>
+                        <h4 class="text-lg font-medium mb-1 text-white"><span class="pillar-number">03</span> Income Potential</h4>
                         <p class="text-zinc-500 text-sm leading-relaxed max-w-md">Poznaj systemy topowych closerów zarabiających 10k-40k PLN miesięcznie.</p>
                     </div>
                 </div>
 
-                <div class="pillar-row hidden-section" style="transition-delay: 0.7s;">
-                    <div class="icon-box reveal-shuffle">
+                <div class="pillar-row" data-delay="700">
+                    <div class="icon-box">
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     </div>
                     <div class="pillar-content">
-                        <h4 class="text-lg font-medium mb-1"><span class="pillar-number">04</span> Private Guidance</h4>
+                        <h4 class="text-lg font-medium mb-1 text-white"><span class="pillar-number">04</span> Private Guidance</h4>
                         <p class="text-zinc-500 text-sm leading-relaxed max-w-md">Bezpośredni mentoring i accountability od aktywnych praktyków rynku.</p>
                     </div>
                 </div>
@@ -450,21 +440,37 @@
         const btnText = document.getElementById('btn-text');
         const overlay = document.getElementById('video-overlay');
 
+        // Observer dla zwykłych sekcji
         const revealOnScroll = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('section-visible');
                 }
             });
-        }, {
-            threshold: 0.15,
-            rootMargin: "0px 0px -50px 0px"
-        });
+        }, { threshold: 0.15 });
 
         document.querySelectorAll('.hidden-section').forEach(section => {
             revealOnScroll.observe(section);
         });
 
+        // Observer dla sekcji FILARÓW (shuffle reveal)
+        const pillarObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const rows = entry.target.querySelectorAll('.pillar-row');
+                    rows.forEach(row => {
+                        setTimeout(() => {
+                            row.classList.add('reveal-active');
+                        }, row.dataset.delay);
+                    });
+                }
+            });
+        }, { threshold: 0.2 });
+
+        const pillarsTrigger = document.getElementById('pillars-trigger');
+        if(pillarsTrigger) pillarObserver.observe(pillarsTrigger);
+
+        // YouTube API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -498,18 +504,10 @@
             if (isPlayerReady && player) {
                 player.unMute();
                 player.playVideo();
-            } else {
-                btnText.innerText = "Ładowanie...";
-                let checkReady = setInterval(() => {
-                    if (isPlayerReady) {
-                        player.unMute();
-                        player.playVideo();
-                        clearInterval(checkReady);
-                    }
-                }, 200);
             }
         }
 
+        // Kursor
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
