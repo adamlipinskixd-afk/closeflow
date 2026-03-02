@@ -41,7 +41,7 @@
             padding: 12px 28px; border-radius: 50px; display: inline-flex; align-items: center;
         }
 
-        /* --- VSL CONTAINER (STANDARD YT) --- */
+        /* --- VSL CONTAINER --- */
         .vsl-container {
             max-width: 960px; margin: 0 auto; position: relative;
             border-radius: 2.5rem; overflow: hidden;
@@ -49,7 +49,6 @@
             aspect-ratio: 16/9; box-shadow: 0 80px 150px rgba(0,0,0,0.9);
         }
 
-        /* Standardowy YouTube bez kadrowania */
         #yt-player { 
             position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; 
         }
@@ -60,7 +59,7 @@
             backdrop-filter: blur(45px) saturate(160%); -webkit-backdrop-filter: blur(45px) saturate(160%);
             background: rgba(0,0,0,0.4);
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.6s ease;
         }
 
         .liquid-glass-btn {
@@ -101,7 +100,7 @@
         <section class="px-6">
             <div class="max-w-6xl mx-auto text-center">
                 <div class="mb-14">
-                    <div class="pill-status">• Złóż aplikację — liczba miejsc ograniczona •</div>
+                    <div class="pill-status">• Aplikacja otwarta •</div>
                 </div>
                 
                 <div class="vsl-container" id="vsl-box">
@@ -121,11 +120,15 @@
     </div>
 
     <section class="py-40 px-6 text-center bg-black">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="serif text-5xl md:text-7xl mb-14 leading-[1.05] text-white">
-                To jest Twoja szansa na otrzymanie <br>
-                <span class="italic font-light opacity-80 text-zinc-300">prawdziwego szkolenia</span>
+        <div class="max-w-5xl mx-auto">
+            <h2 class="serif text-4xl md:text-6xl mb-6 leading-[1.15] text-white">
+                Nie każdy dostaje taką szansę. <br>
+                <span class="italic font-light opacity-80 text-zinc-300">Prawdziwy trening sprzedaży, realna zmiana życia</span> <br>
+                oraz możliwość wejścia do świata <span class="text-[#ff8c00]">high-ticket</span>
             </h2>
+            <p class="text-zinc-500 text-lg mb-16 tracking-wide font-light">
+                wypełnij formularz liczba miejsc jest ograniczona
+            </p>
             <a href="#aplikuj" class="cta-premium">Złóż aplikację teraz →</a>
         </div>
     </section>
@@ -141,8 +144,11 @@
     </footer>
 
     <script>
-        // Ta funkcja MUSI być przed ładowaniem skryptu YouTube
         let player;
+        const glow = document.getElementById('cursor-glow');
+        const tallyBox = document.getElementById('tally-box');
+
+        // YouTube API Init
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
                 videoId: 'nLx-ZWkzIEI',
@@ -151,23 +157,32 @@
                     'controls': 1, 
                     'rel': 0, 
                     'modestbranding': 1,
-                    'iv_load_policy': 3
+                    'iv_load_policy': 3,
+                    'showinfo': 0
                 },
                 events: {
-                    'onReady': function(event) {
-                        console.log("YouTube Player is ready");
-                    }
+                    'onReady': onPlayerReady
                 }
             });
         }
 
-        // Ładowanie API YouTube asynchronicznie
+        function onPlayerReady(event) {
+            // "Ciche" wyciszenie i puszczenie na ułamek sekundy by zbuforować wideo (eliminuje lag)
+            event.target.mute();
+            event.target.playVideo();
+            setTimeout(() => {
+                event.target.pauseVideo();
+                event.target.unMute();
+                console.log("Player Buffered & Ready");
+            }, 500);
+        }
+
+        // Ładowanie API YT
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Funkcja startu wideo
         function startVSL() {
             const overlay = document.getElementById('video-overlay');
             overlay.style.opacity = '0';
@@ -176,13 +191,10 @@
                 if (player && player.playVideo) {
                     player.playVideo();
                 }
-            }, 800);
+            }, 600);
         }
 
-        // Obsługa kursora Glow i chowania go nad Tally
-        const glow = document.getElementById('cursor-glow');
-        const tallyBox = document.getElementById('tally-box');
-
+        // Kursor Glow Logic
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
@@ -197,11 +209,7 @@
                     e.clientY <= rect.bottom
                 );
 
-                if (isOverForm) {
-                    glow.style.opacity = '0';
-                } else {
-                    glow.style.opacity = '1';
-                }
+                glow.style.opacity = isOverForm ? '0' : '1';
             });
         }
     </script>
