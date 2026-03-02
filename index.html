@@ -17,7 +17,6 @@
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
             position: relative;
         }
-        /* Warstwa tła, która nie ucieka przy scrollowaniu */
         body::before {
             content: "";
             position: fixed;
@@ -49,7 +48,6 @@
         /* --- VSL SECTION --- */
         .vsl-section { padding-bottom: 40px; }
 
-        /* --- PILL EMANUJĄCY --- */
         .pill-status {
             border: 1px solid rgba(93, 169, 255, 0.3); 
             background: rgba(0, 33, 71, 0.4);
@@ -88,7 +86,6 @@
             transition: opacity 0.8s ease;
         }
 
-        /* Dodano animację emanate do przycisku */
         .liquid-glass-btn {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -196,11 +193,11 @@
                 
                 <div class="vsl-container" id="vsl-box">
                     <div id="video-overlay">
-                        <button class="liquid-glass-btn" onclick="startVSL()">
+                        <button id="vsl-trigger" class="liquid-glass-btn" onclick="startVSL()">
                             <span class="play-icon-bg">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                             </span>
-                            Odsłuchaj
+                            <span id="btn-text">Odsłuchaj</span>
                         </button>
                     </div>
                     <div id="yt-player"></div>
@@ -246,9 +243,13 @@
 
     <script>
         let player;
+        let isPlayerReady = false;
+        let playRequested = false;
+
         const glow = document.getElementById('cursor-glow');
         const tallyBox = document.getElementById('tally-box');
         const vslBox = document.getElementById('vsl-box');
+        const btnText = document.getElementById('btn-text');
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
@@ -257,17 +258,37 @@
                     'autoplay': 0, 'controls': 1, 'rel': 0, 'modestbranding': 1,
                     'iv_load_policy': 3, 'showinfo': 0
                 },
-                events: { 'onReady': onPlayerReady }
+                events: { 
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
             });
         }
 
         function onPlayerReady(event) {
+            isPlayerReady = true;
+            // Próba cichego "rozgrzania" odtwarzacza
             event.target.mute();
             event.target.playVideo();
             setTimeout(() => {
                 event.target.pauseVideo();
                 event.target.unMute();
+                // Jeśli użytkownik już zdążył kliknąć, odpalamy teraz
+                if (playRequested) {
+                    startVSL();
+                }
             }, 600);
+        }
+
+        function onPlayerStateChange(event) {
+            // Jeśli film zaczął grać, upewnij się, że nakładka znika
+            if (event.data == YT.PlayerState.PLAYING) {
+                const overlay = document.getElementById('video-overlay');
+                if (overlay.style.display !== 'none') {
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.style.display = 'none', 600);
+                }
+            }
         }
 
         var tag = document.createElement('script');
@@ -276,14 +297,23 @@
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         function startVSL() {
+            if (!isPlayerReady) {
+                playRequested = true;
+                btnText.innerText = "Ładowanie...";
+                return;
+            }
+
             const overlay = document.getElementById('video-overlay');
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
-                if (player && player.playVideo) player.playVideo();
+                if (player && player.playVideo) {
+                    player.playVideo();
+                }
             }, 600);
         }
 
+        // Kursor glow (tylko desktop)
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
