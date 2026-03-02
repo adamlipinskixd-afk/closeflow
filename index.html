@@ -7,27 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* GLOBAL RESET */
         html, body { 
             background-color: #000; color: #fff; font-family: 'Inter', sans-serif; 
             margin: 0; padding: 0; overflow-x: hidden; scrollbar-width: none; 
         }
         body::-webkit-scrollbar { display: none; }
 
-        /* KURSOR: SYSTEMOWY + GLOW + LOGIKA CHOWANIA */
+        /* KURSOR Z GLOW - INTELIGENTNY */
         #cursor-glow {
             width: 65px; height: 65px;
             background: radial-gradient(circle, rgba(255, 140, 0, 0.2) 0%, transparent 75%);
             border: 1px solid rgba(255, 140, 0, 0.25);
             border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000;
             transform: translate(-50%, -50%); transition: opacity 0.3s ease;
-            display: none; /* Pokazujemy tylko na desktopie przez JS */
+            display: none;
         }
 
         .serif { font-family: 'Playfair Display', serif; }
         .brand-logo { color: #ff8c00; letter-spacing: 0.6em; font-weight: 300; text-transform: uppercase; font-size: 13px; }
 
-        /* VSL SECTION */
+        /* VSL SEKCJA */
         .vsl-section {
             background: linear-gradient(to bottom, #0d0d0d 0%, #0d0d0d 85%, #000 100%);
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
@@ -40,12 +39,13 @@
             padding: 10px 24px; border-radius: 50px; display: inline-flex; align-items: center;
             animation: pulse-glow 2s infinite ease-in-out;
         }
+
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.5); }
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 140, 0, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(255, 140, 0, 0.4); }
         }
 
-        /* VSL CONTAINER - TRUE CUSTOM FEEL */
+        /* VSL PLAYER - TRUE LIQUID GLASS */
         .vsl-container {
             max-width: 940px; margin: 0 auto; position: relative;
             border-radius: 2.5rem; overflow: hidden;
@@ -53,19 +53,15 @@
             aspect-ratio: 16/9; box-shadow: 0 60px 150px rgba(0,0,0,0.9);
         }
 
-        /* Maskowanie YouTube'a przed kliknięciem */
-        #yt-player { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; pointer-events: none; transform: scale(1.01); /* Lekkie powiększenie tnie czarne paski */
-        }
+        video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* OVERLAY - LIQUID GLASS */
+        /* OVERLAY - MOCNY LIQUID GLASS */
         #video-overlay {
             position: absolute; inset: 0; z-index: 20;
-            backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%);
-            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(45px) saturate(160%); -webkit-backdrop-filter: blur(45px) saturate(160%);
+            background: rgba(0,0,0,0.4);
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.8s ease, visibility 0.8s;
         }
 
         .liquid-btn {
@@ -74,29 +70,28 @@
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 100px;
             color: #fff; cursor: pointer; transition: all 0.3s ease;
             padding: 18px 40px; font-weight: 500; display: flex; align-items: center; gap: 15px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
         .liquid-btn:hover { border-color: #ff8c00; transform: scale(1.05); }
 
-        /* PLAY/PAUSE MINI GLASS */
+        /* MINI CONTROLS - SZKŁO */
         #mini-controls {
             position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
             z-index: 30; opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
         }
         .glass-circle {
-            width: 60px; height: 60px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.07); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
+            width: 65px; height: 65px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
             display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
-        /* CTA & FORM */
         .cta-premium {
             background: #ff8c00; color: #fff; padding: 22px 65px; border-radius: 100px;
             font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; font-size: 12px;
             box-shadow: 0 15px 45px rgba(255, 140, 0, 0.3); transition: all 0.4s ease; display: inline-block;
         }
-        .cta-premium:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(255, 140, 0, 0.5); }
 
         .form-frame { max-width: 540px; margin: 0 auto; height: 580px; overflow: hidden; border-radius: 40px; background: #000; position: relative; }
     </style>
@@ -118,7 +113,7 @@
                 
                 <div class="vsl-container">
                     <div id="video-overlay">
-                        <button class="liquid-btn" onclick="startFlow()">
+                        <button class="liquid-btn" onclick="startVideo()">
                             <span class="w-10 h-10 rounded-full bg-[#ff8c00] flex items-center justify-center shadow-lg">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                             </span>
@@ -126,11 +121,14 @@
                         </button>
                     </div>
 
-                    <div id="yt-player"></div>
+                    <video id="main-video" playsinline>
+                        <source src="https://drive.google.com/drive/folders/1eymWFFnxowul8Agy8GoLMNlTMK9ZRQWW?hl=pl">
+                        Twoja przeglądarka nie obsługuje wideo.
+                    </video>
 
                     <div id="mini-controls">
-                        <button class="glass-circle" onclick="toggleFlow()">
-                            <svg id="p-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <button class="glass-circle" onclick="toggleVideo()">
+                            <svg id="p-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>
                             </svg>
                         </button>
@@ -157,44 +155,28 @@
         </div>
     </section>
 
-    <footer class="py-12 text-center bg-black border-t border-white/5 opacity-30">
-        <p class="text-[10px] tracking-[0.5em] uppercase">© 2026 CloseFlow</p>
-    </footer>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        let player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                videoId: 'nLx-ZWkzIEI',
-                playerVars: { 
-                    'controls': 0, 'modestbranding': 1, 'rel': 0, 'showinfo': 0, 'iv_load_policy': 3, 'disablekb': 1
-                },
-                events: { 'onStateChange': onPlayerStateChange }
-            });
-        }
+        const video = document.getElementById('main-video');
+        const overlay = document.getElementById('video-overlay');
+        const controls = document.getElementById('mini-controls');
+        const icon = document.getElementById('p-icon');
 
-        function startFlow() {
-            document.getElementById('video-overlay').style.opacity = '0';
+        function startVideo() {
+            overlay.style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('video-overlay').style.display = 'none';
-                document.getElementById('mini-controls').style.opacity = '1';
-                document.getElementById('mini-controls').style.pointerEvents = 'auto';
-                player.playVideo();
+                overlay.style.visibility = 'hidden';
+                controls.style.opacity = '1';
+                controls.style.pointerEvents = 'auto';
+                video.play();
             }, 800);
         }
 
-        function toggleFlow() {
-            const state = player.getPlayerState();
-            if (state === 1) player.pauseVideo();
-            else player.playVideo();
-        }
-
-        function onPlayerStateChange(event) {
-            const icon = document.getElementById('p-icon');
-            if (event.data === 1) { // Playing
+        function toggleVideo() {
+            if (video.paused) {
+                video.play();
                 icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-            } else { // Paused
+            } else {
+                video.pause();
                 icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3" fill="#fff" stroke="none"></polygon>';
             }
         }
