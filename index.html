@@ -198,19 +198,19 @@
             position: relative;
         }
 
-        /* Linia łącząca kafelki - jeden ciągły element */
+        /* Linia łącząca kafelki - skrócona, by nie wystawała poza ostatnią ikonę */
         .pillar-main-line {
             position: absolute;
-            left: 25px; /* Środek icon-box */
-            top: 25px;  /* Od środka pierwszej ikony */
-            bottom: 25px; /* Do środka ostatniej ikony */
+            left: 25px; 
+            top: 25px;  
+            bottom: 60px; /* Zmienione z 25px na 60px, aby kończyła się na środku ostatniej ikony */
             width: 1px;
             background: linear-gradient(to bottom, 
-                #ff6b00 0%, 
-                rgba(255, 107, 0, 0.4) 50%, 
-                #ff6b00 100%
+                rgba(93, 169, 255, 0.8) 0%, 
+                rgba(93, 169, 255, 0.2) 50%, 
+                rgba(93, 169, 255, 0.8) 100%
             );
-            opacity: 0.4;
+            opacity: 0.3;
             z-index: 1;
         }
 
@@ -223,21 +223,21 @@
             z-index: 2;
         }
 
-        /* Ikony z efektem LIQUID GLASS */
+        /* Ikony z efektem LIQUID GLASS - Poprawiona poświata i wypełnienie */
         .icon-box {
             width: 50px;
             height: 50px;
             min-width: 50px;
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(255, 107, 0, 0.02) 100%);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 107, 0, 0.25);
+            background: linear-gradient(135deg, rgba(93, 169, 255, 0.1) 0%, rgba(93, 169, 255, 0.03) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(93, 169, 255, 0.2);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: inset 0 0 12px rgba(93, 169, 255, 0.05), 0 8px 32px 0 rgba(0, 0, 0, 0.4);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             overflow: hidden;
@@ -256,9 +256,9 @@
 
         .icon-box:hover {
             transform: scale(1.1) translateY(-5px);
-            border-color: rgba(255, 107, 0, 0.6);
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.25) 0%, rgba(255, 107, 0, 0.05) 100%);
-            box-shadow: 0 15px 45px rgba(255, 107, 0, 0.2);
+            border-color: rgba(93, 169, 255, 0.5);
+            background: linear-gradient(135deg, rgba(93, 169, 255, 0.15) 0%, rgba(93, 169, 255, 0.08) 100%);
+            box-shadow: inset 0 0 15px rgba(93, 169, 255, 0.1), 0 15px 45px rgba(0, 0, 0, 0.5);
         }
 
         .icon-box:hover::before {
@@ -271,7 +271,7 @@
 
         .pillar-number {
             font-size: 10px;
-            color: rgba(255, 107, 0, 0.6);
+            color: rgba(93, 169, 255, 0.6);
             font-weight: 700;
             margin-right: 8px;
         }
@@ -367,7 +367,7 @@
     <section class="py-24 px-6 overflow-hidden">
         <div class="max-w-2xl mx-auto">
             <div class="mb-20 hidden-section">
-                <h2 class="serif-premium text-4xl md:text-6xl text-white mb-4">Co <span style="color: #ff6b00;">Zyskujesz</span></h2>
+                <h2 class="serif-premium text-4xl md:text-6xl text-white mb-4">Co <span style="color: #5da9ff;">Zyskujesz</span></h2>
                 <p class="text-zinc-500 uppercase tracking-widest text-xs">Cztery filary zarezerwowane dla członków sieci</p>
             </div>
 
@@ -376,7 +376,7 @@
 
                 <div class="pillar-row hidden-section" style="transition-delay: 0.1s;">
                     <div class="icon-box reveal-shuffle">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                     </div>
                     <div class="pillar-content">
                         <h4 class="text-lg font-medium mb-1"><span class="pillar-number">01</span> Offer Placement</h4>
@@ -386,7 +386,7 @@
 
                 <div class="pillar-row hidden-section" style="transition-delay: 0.3s;">
                     <div class="icon-box reveal-shuffle">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
                     </div>
                     <div class="pillar-content">
                         <h4 class="text-lg font-medium mb-1"><span class="pillar-number">02</span> Elite Closing Skillset</h4>
@@ -396,7 +396,7 @@
 
                 <div class="pillar-row hidden-section" style="transition-delay: 0.5s;">
                     <div class="icon-box reveal-shuffle">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
                     </div>
                     <div class="pillar-content">
                         <h4 class="text-lg font-medium mb-1"><span class="pillar-number">03</span> Income Potential</h4>
@@ -406,7 +406,7 @@
 
                 <div class="pillar-row hidden-section" style="transition-delay: 0.7s;">
                     <div class="icon-box reveal-shuffle">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff6b00" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5da9ff" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     </div>
                     <div class="pillar-content">
                         <h4 class="text-lg font-medium mb-1"><span class="pillar-number">04</span> Private Guidance</h4>
@@ -450,7 +450,6 @@
         const btnText = document.getElementById('btn-text');
         const overlay = document.getElementById('video-overlay');
 
-        // Obsługa Intersection Observer dla sekcji i ikon
         const revealOnScroll = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -466,7 +465,6 @@
             revealOnScroll.observe(section);
         });
 
-        // YouTube API
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -512,7 +510,6 @@
             }
         }
 
-        // Kursor Glow
         if (window.matchMedia("(pointer: fine)").matches) {
             glow.style.display = 'block';
             document.addEventListener('mousemove', (e) => {
